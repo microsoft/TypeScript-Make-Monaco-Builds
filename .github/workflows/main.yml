@@ -1,0 +1,19 @@
+name: Daily builds of monaco-typescript and monaco of TypeScript
+
+on:
+  schedule:
+  - cron: "0 0 * * *"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Go
+      run: ./generate-daily
+
+    - name: Generate PR builds
+      run: ./generate-prs
