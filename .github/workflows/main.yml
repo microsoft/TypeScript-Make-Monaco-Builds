@@ -40,7 +40,7 @@ jobs:
         MONACO_TS_VERSION=$(json -f package.json version)
 
     - name: Deploy Monaco TypeScript
-      run: npm publish --access public
+      run: npm publish --access public --tag nightly
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -62,6 +62,6 @@ jobs:
         cd release
 
     - name: Deploy Monaco Editor
-      run: npm publish --access public
+      run: npm publish --access public --tag nightly
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
