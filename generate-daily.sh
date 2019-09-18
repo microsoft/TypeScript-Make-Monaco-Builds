@@ -19,7 +19,7 @@ npm run run-nightly
 
 json -I -f package.json -e "this.name='@orta/monaco-typescript'"
 json -I -f package.json -e "this.publishConfig={'access': 'public'}"
-
+npm publish --access public
 
 
 # Keep a var of the version so we can hook monaco editor to it later
