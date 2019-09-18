@@ -4,6 +4,9 @@ npm install -g json
 # for shipping to npm
 echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > .npmrc
 
+# Just for validation
+npm whoami
+
 ### Set up Monaco TypeScript first
 
 # clone & setup
@@ -34,6 +37,8 @@ gulp release
 cd release
 npm publish --access public
 
+
+# -------------
 
 ## These may be useful again in the future
 
