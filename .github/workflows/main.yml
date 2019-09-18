@@ -21,3 +21,5 @@ jobs:
 
     - name: Generate PR builds
       run: ./generate-prs.sh
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
