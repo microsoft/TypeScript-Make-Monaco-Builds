@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v1
 
     - name: Go
-      run: ./generate-daily
+      run: ./generate-daily.sh
 
     - name: Generate PR builds
-      run: ./generate-prs
+      run: ./generate-prs.sh
