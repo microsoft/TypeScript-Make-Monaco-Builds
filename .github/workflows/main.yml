@@ -11,6 +11,7 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
 
     - name: Create a Daily TS build
       run: ./generate-daily.sh
