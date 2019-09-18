@@ -1,8 +1,8 @@
 name: Daily builds of monaco-typescript and monaco of TypeScript
 
-on:
-  schedule:
-  - cron: "0 0 * * *"
+on: push
+  # schedule:
+  # - cron: "0 0 * * *"
 
 jobs:
   build:
