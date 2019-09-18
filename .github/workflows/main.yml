@@ -28,6 +28,7 @@ jobs:
         json -I -f package.json -e "this.publishConfig={'access': 'public'}"
 
     - uses: primer/publish@master
+      args: --dir monaco-typescript
       env:
         NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
