@@ -1,8 +1,11 @@
 name: Daily builds of monaco-typescript and monaco of TypeScript
 
-on: push
-  # schedule:
-  # - cron: "0 0 * * *"
+# For testing
+# on: push
+
+on:
+  schedule:
+  - cron: "0 0 * * *"
 
 jobs:
   build:
@@ -13,6 +16,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
 
+    # Lets us use one-liner JSON manipulations on package.jsons
     - run: "npm install -g json"
 
     - name: Setup Monaco TypeScript
@@ -45,6 +49,9 @@ jobs:
         cd monaco-editor
 
         json -I -f package.json -e "this.name='@orta/monaco-editor'" 
+        
+        # Yarn supports aliasing a module, so we can use the fork and pretend
+        # to be the real version of the module.
         yarn add monaco-typescript@npm:@orta/monaco-typescript@$MONACO_TS_VERSION
 
         # Create a release build, this makes a new sub-folder called release with the module
