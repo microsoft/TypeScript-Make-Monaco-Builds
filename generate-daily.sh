@@ -31,7 +31,7 @@ cd ..
 git clone https://github.com/microsoft/monaco-editor.git
 cd monaco-editor
 
-json -I -f package.json -e "this.name='@orta-monaco-editor'" 
+json -I -f package.json -e "this.name='@orta/monaco-editor'" 
 json -I -f package.json -e "this.publishConfig={'access': 'public'}"
 
 yarn add monaco-typescript@npm:@orta/monaco-typescript@$MONACO_TS_VERSION
