@@ -13,13 +13,30 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
 
-    - name: Create a Daily TS build
-      run: ./generate-daily.sh
+    - run: "npm install -g json"
+
+    - name: Setup Monaco TypeScript
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: |
+        git clone https://github.com/microsoft/monaco-typescript.git
+        cd monaco-typescript
+        npm i
+
+        # set up the monaco to be based on the nightly version
+        npm run run-nightly
+
+        json -I -f package.json -e "this.name='@orta/monaco-typescript'"
+        json -I -f package.json -e "this.publishConfig={'access': 'public'}"
+        npm publish --access public
 
 
-    - name: Generate PR builds
-      run: ./generate-prs.sh
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    # - name: Create a Daily TS build
+    #   run: ./generate-daily.sh
+
+
+    # - name: Generate PR builds
+    #   run: ./generate-prs.sh
+    #   env:
+    #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
