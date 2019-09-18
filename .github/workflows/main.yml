@@ -23,11 +23,13 @@ jobs:
 
         # set up the monaco to be based on the nightly version
         npm run run-nightly
+        npm run prepublishOnly
 
         json -I -f package.json -e "this.name='@orta/monaco-typescript'"
         json -I -f package.json -e "this.publishConfig={'access': 'public'}"
         
         MONACO_TS_VERSION=$(json -f package.json version)
+        cd ..
 
     - name: Deploy Monaco TypeScript
       uses: primer/publish@master
@@ -43,8 +45,6 @@ jobs:
         cd monaco-editor
 
         json -I -f package.json -e "this.name='@orta/monaco-editor'" 
-        json -I -f package.json -e "this.publishConfig={'access': 'public'}"
-
         yarn add monaco-typescript@npm:@orta/monaco-typescript@$MONACO_TS_VERSION
 
         # Create a release build, this makes a new sub-folder called release with the module
