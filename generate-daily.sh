@@ -2,7 +2,7 @@
 npm install -g json
 
 # for shipping to npm
-echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > .npmrc
+# echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > .npmrc
 
 # Just for validation
 npm whoami
@@ -17,10 +17,10 @@ npm i
 # set up the monaco to be based on the nightly version
 npm run run-nightly
 
-json -I -f package.json -e "this.name='@typescript-deploys/monaco-typescript'"
+json -I -f package.json -e "this.name='@orta/monaco-typescript'"
 json -I -f package.json -e "this.publishConfig={'access': 'public'}"
 
-npm publish --access public
+
 
 # Keep a var of the version so we can hook monaco editor to it later
 MONACO_TS_VERSION=$(json -f package.json version)
@@ -31,10 +31,10 @@ cd ..
 git clone https://github.com/microsoft/monaco-editor.git
 cd monaco-editor
 
-json -I -f package.json -e "this.name='@typescript-deploys/monaco-editor'" 
+json -I -f package.json -e "this.name='@orta-monaco-editor'" 
 json -I -f package.json -e "this.publishConfig={'access': 'public'}"
 
-yarn add monaco-typescript@npm:@typescript-deploys/monaco-typescript@$MONACO_TS_VERSION
+yarn add monaco-typescript@npm:@orta/monaco-typescript@$MONACO_TS_VERSION
 
 # Create a release build, this makes a new sub-folder called release
 gulp release

@@ -16,10 +16,10 @@ jobs:
     - name: Create a Daily TS build
       run: ./generate-daily.sh
       env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 
     - name: Generate PR builds
       run: ./generate-prs.sh
       env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
