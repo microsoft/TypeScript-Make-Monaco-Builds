@@ -5,7 +5,7 @@ npm install -g json
 # echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > .npmrc
 
 # Just for validation
-npm whoami
+# npm whoami
 
 ### Set up Monaco TypeScript first
 
