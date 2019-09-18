@@ -1,11 +1,11 @@
 name: Daily builds of monaco-typescript and monaco of TypeScript
 
 # For testing
-on: push
+# on: push
 
-# on:
-#   schedule:
-#   - cron: "0 0 * * *"
+on:
+  schedule:
+  - cron: "0 0 * * *"
 
 jobs:
   build:
@@ -15,9 +15,15 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+        registry-url: 'https://registry.npmjs.org'
+
 
     # Lets us use one-liner JSON manipulations on package.jsons
     - run: "npm install -g json"
+
+  
 
     - name: Setup Monaco TypeScript
       run: |
@@ -32,15 +38,12 @@ jobs:
         json -I -f package.json -e "this.name='@typescript-deploys/monaco-typescript'"
         
         MONACO_TS_VERSION=$(json -f package.json version)
-        cd ..
 
     - name: Deploy Monaco TypeScript
-      uses: primer/publish@master
-      with:
-        args: "--dir monaco-typescript"
+      run: npm publish --access public
       env:
-        NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
 
     - name: Setup Monaco Editor
       run: |
@@ -48,18 +51,17 @@ jobs:
         cd monaco-editor
 
         json -I -f package.json -e "this.name='@typescript-deploys/monaco-editor'" 
-        
+        json -I -f package.json -e "this.version='$MONACO_TS_VERSION'" 
+
         # Yarn supports aliasing a module, so we can use the fork and pretend
         # to be the real version of the module.
         yarn add monaco-typescript@npm:@typescript-deploys/monaco-typescript@$MONACO_TS_VERSION
 
         # Create a release build, this makes a new sub-folder called release with the module
         gulp release
+        cd release
 
     - name: Deploy Monaco Editor
-      uses: primer/publish@master
-      with:
-        args: "--dir monaco-editor/release"
+      run: npm publish --access public
       env:
-        NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
