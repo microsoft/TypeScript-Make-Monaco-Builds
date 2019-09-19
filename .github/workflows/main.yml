@@ -5,7 +5,7 @@ name: Daily builds of monaco-typescript and monaco of TypeScript
 
 on:
   schedule:
-  - cron: "0 0 * * *"
+  - cron: "0 4 * * *"
 
 jobs:
   build:
@@ -26,6 +26,8 @@ jobs:
   
 
     - name: Setup Monaco TypeScript
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: |
         git clone https://github.com/microsoft/monaco-typescript.git
         cd monaco-typescript
@@ -39,13 +41,13 @@ jobs:
         
         MONACO_TS_VERSION=$(json -f package.json version)
 
-    - name: Deploy Monaco TypeScript
-      run: npm publish --access public --tag nightly
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        npm publish --access public --tag nightly
+        cd ..
 
 
     - name: Setup Monaco Editor
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: |
         git clone https://github.com/microsoft/monaco-editor.git
         cd monaco-editor
@@ -61,7 +63,5 @@ jobs:
         gulp release
         cd release
 
-    - name: Deploy Monaco Editor
-      run: npm publish --access public --tag nightly
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        npm publish --access public --tag nightly
+
