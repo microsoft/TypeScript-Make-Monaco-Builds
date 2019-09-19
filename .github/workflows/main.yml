@@ -19,11 +19,8 @@ jobs:
         node-version: '10.x'
         registry-url: 'https://registry.npmjs.org'
 
-
     # Lets us use one-liner JSON manipulations on package.jsons
     - run: "npm install -g json"
-
-  
 
     - name: Setup Monaco TypeScript
       env:
@@ -39,8 +36,6 @@ jobs:
 
         json -I -f package.json -e "this.name='@typescript-deploys/monaco-typescript'"
         
-        MONACO_TS_VERSION=$(json -f package.json version)
-
         npm publish --access public --tag nightly
         cd ..
 
@@ -53,11 +48,15 @@ jobs:
         cd monaco-editor
 
         json -I -f package.json -e "this.name='@typescript-deploys/monaco-editor'" 
-        json -I -f package.json -e "this.version='$MONACO_TS_VERSION'" 
 
         # Yarn supports aliasing a module, so we can use the fork and pretend
         # to be the real version of the module.
-        yarn add monaco-typescript@npm:@typescript-deploys/monaco-typescript@$MONACO_TS_VERSION
+        yarn add --dev monaco-typescript@npm:@typescript-deploys/monaco-typescript@nightly
+        
+        # Match the version to the monaco-ts version
+        json -I -f package.json -e "this.version='$(json -f node_modules/monaco-typescript/package.json version)'" 
+
+        echo 'Starting gulp release'
 
         # Create a release build, this makes a new sub-folder called release with the module
         gulp release
