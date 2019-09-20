@@ -1,6 +1,16 @@
 name: Build a version of TypeScript on request
 on: repository_dispatch
 
+# This workflow is triggered from an API call where XXX is your token
+# and YYY is the PR that it should look at.
+
+# curl https://api.github.com/repos/orta/make-monaco-builds/dispatches \
+#  -XPOST \
+#   -H 'Content-Type: application/json' \
+#   -H 'Accept: application/vnd.github.everest-preview+json' \
+#   -H "Authorization: token XXX" \
+#   --data-binary '{ "event_type": "YYY" }'
+
 jobs:
   build:
 
@@ -15,21 +25,22 @@ jobs:
     # Lets us use one-liner JSON manipulations on package.jsons
     - run: "npm install -g json"
 
-    - name: Setup Monaco TypeScript
+    - name: Publish PR Build
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: | 
-        ENCODED_TS_VERSION=$(json f $GITHUB_EVENT_PATH action )
-        DECODED_TS_VERSION=$(php -R 'echo urldecode($ENCODED_TS_VERSION)."\n";')
-        echo "Publishing Monaco based on $DECODED_TS_VERSION"
-        publish-monaco-ts.sh $DECODED_TS_VERSION
+        yarn install
 
+        PULL_REQUEST_NUMBER=$(json f $GITHUB_EVENT_PATH action)
+        echo "Publishing Monaco based on $PULL_REQUEST_NUMBER"
 
-    - name: Setup Monaco Editor
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: |
-        cat $GITHUB_EVENT_PATH
-        # publish-monaco-editor.sh 
+        ZIP_FILE=$(node pulls/echo-typescript-url.js $PULL_REQUEST_NUMBER)
+        echo "Using zip file from\n$ZIP_FILE"
 
+        SEMVER_NUMBER=$(node pulls/echo-release-version.js $PULL_REQUEST_NUMBER)
+        echo "Building \n$SEMVER_NUMBER"
 
+        publish-monaco-ts.sh $DECODED_TS_VERSION $SEMVER_NUMBER
+        publish-monaco-editor.sh 
+
+        node pulls/echo-typescript-url.js $PULL_REQUEST_NUMBER $SEMVER_NUMBER
