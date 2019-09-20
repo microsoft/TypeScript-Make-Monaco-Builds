@@ -1,17 +1,10 @@
-name: Daily builds of monaco-typescript and monaco of TypeScript
-
-# For testing
-# on: push
-
-on:
-  schedule:
-  - cron: "0 4 * * *"
+name: Build a version of TypeScript on request
+on: repository_dispatch
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
@@ -25,12 +18,16 @@ jobs:
     - name: Setup Monaco TypeScript
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: publish-monaco-ts.sh 
+      run: | 
+        cat $(GITHUB_EVENT_PATH)
+        # publish-monaco-ts.sh 
 
 
     - name: Setup Monaco Editor
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: publish-monaco-editor.sh 
+      run: |
+        cat $(GITHUB_EVENT_PATH)
+        # publish-monaco-editor.sh 
 
 
