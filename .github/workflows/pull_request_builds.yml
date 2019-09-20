@@ -19,8 +19,10 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: | 
-        cat $GITHUB_EVENT_PATH
-        # publish-monaco-ts.sh 
+        ENCODED_TS_VERSION=$(json f $GITHUB_EVENT_PATH action )
+        DECODED_TS_VERSION=$(php -R 'echo urldecode($ENCODED_TS_VERSION)."\n";')
+        echo "Publishing Monaco based on $DECODED_TS_VERSION"
+        publish-monaco-ts.sh $DECODED_TS_VERSION
 
 
     - name: Setup Monaco Editor
