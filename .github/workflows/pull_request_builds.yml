@@ -28,6 +28,7 @@ jobs:
     - name: Publish PR Build
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
       run: | 
         yarn install
 
