@@ -19,7 +19,7 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: | 
-        cat $(GITHUB_EVENT_PATH)
+        cat $GITHUB_EVENT_PATH
         # publish-monaco-ts.sh 
 
 
@@ -27,7 +27,7 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: |
-        cat $(GITHUB_EVENT_PATH)
+        cat $GITHUB_EVENT_PATH
         # publish-monaco-editor.sh 
 
 
