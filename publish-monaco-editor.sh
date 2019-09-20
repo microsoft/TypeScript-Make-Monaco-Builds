@@ -11,7 +11,7 @@ json -I -f package.json -e "this.name='@typescript-deploys/monaco-editor'"
 
 # Yarn supports aliasing a module, so we can use the fork and pretend
 # to be the real version of the module.
-yarn add --dev monaco-typescript@npm:@typescript-deploys/monaco-typescript@$(MONACO_TS_VERSION)
+yarn add --dev "monaco-typescript@npm:@typescript-deploys/monaco-typescript@$MONACO_TS_VERSION"
 
 # Match the version to the monaco-ts version
 json -I -f package.json -e "this.version='$(json -f node_modules/monaco-typescript/package.json version)'" 

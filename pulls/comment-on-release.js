@@ -13,7 +13,7 @@ if (!process.argv[3]) {
 }
 
 const prNumber = process.argv[2];
-const npmTag = process.argv[2];
+const npmTag = process.argv[3];
 
 const github = require("@actions/github");
 const octokit = new github.GitHub(process.env.GITHUB_TOKEN);
