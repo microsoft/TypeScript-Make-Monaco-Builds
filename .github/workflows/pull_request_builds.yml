@@ -5,7 +5,7 @@ on: repository_dispatch
 # and YYY is the PR that it should look at.
 
 # curl https://api.github.com/repos/orta/make-monaco-builds/dispatches \
-#  -XPOST \
+#   -XPOST \
 #   -H 'Content-Type: application/json' \
 #   -H 'Accept: application/vnd.github.everest-preview+json' \
 #   -H "Authorization: token XXX" \
@@ -30,6 +30,8 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: | 
         yarn install
+
+        cat $GITHUB_EVENT_PATH
 
         PULL_REQUEST_NUMBER=$(json f $GITHUB_EVENT_PATH action)
         echo "Publishing Monaco based on $PULL_REQUEST_NUMBER"
