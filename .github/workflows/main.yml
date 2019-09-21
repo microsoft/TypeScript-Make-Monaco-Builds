@@ -25,12 +25,12 @@ jobs:
     - name: Setup Monaco TypeScript
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: publish-monaco-ts.sh 
+      run: ./publish-monaco-ts.sh 
 
 
     - name: Setup Monaco Editor
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: publish-monaco-editor.sh 
+      run: ./publish-monaco-editor.sh 
 
 

@@ -4,6 +4,13 @@
 
 MONACO_TS_VERSION=${1:-nightly}
 
+ if [ "$1" -eq  "0" ]
+   then
+     NPM_TAG="--tag nightly"
+ else
+     NPM_TAG=""
+ fi
+
 git clone https://github.com/microsoft/monaco-editor.git
 cd monaco-editor
 
@@ -22,6 +29,6 @@ echo 'Starting gulp release'
 gulp release
 cd release
 
-npm publish --access public --tag nightly
+npm publish --access public $NPM_TAG
 
 cd ..

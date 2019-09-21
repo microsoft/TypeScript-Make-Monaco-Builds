@@ -7,6 +7,13 @@
 
 TS_VERSION=${1:-next}
 
+ if [ "$1" -eq  "0" ]
+   then
+     NPM_TAG="--tag nightly"
+ else
+     NPM_TAG=""
+ fi
+
 git clone https://github.com/microsoft/monaco-typescript.git
 
 cd monaco-typescript
@@ -28,4 +35,4 @@ json -I -f package.json -e "this.version='$VERSION'"
 # Change the name
 json -I -f package.json -e "this.name='@typescript-deploys/monaco-typescript'"
 
-npm publish --access public --tag nightly
+npm publish --access public $NPM_TAG
