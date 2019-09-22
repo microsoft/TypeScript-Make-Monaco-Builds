@@ -43,6 +43,8 @@ jobs:
         SEMVER_NUMBER=$(node pulls/echo-release-version.js $PULL_REQUEST_NUMBER)
         echo "Building TS Monaco $SEMVER_NUMBER"
 
+        ./publish-monaco-ts.sh $ZIP_FILE $SEMVER_NUMBER
+
         echo "Building Monaco Editor with the new TS Monaco"
         ./publish-monaco-editor.sh $SEMVER_NUMBER
 
