@@ -48,5 +48,12 @@ jobs:
         echo "Building Monaco Editor with the new TS Monaco"
         ./publish-monaco-editor.sh $SEMVER_NUMBER
 
+        echo ""
+        echo ""
+        echo ""
+        echo "https://www.typescriptlang.org/play/?ts=$SEMVER_NUMBER"
+        echo ""
+        echo ""
+        echo ""
         echo "Commenting back on the PR"
         node pulls/comment-on-release.js $PULL_REQUEST_NUMBER $SEMVER_NUMBER
