@@ -7,7 +7,7 @@
 
 TS_VERSION=${1:-next}
 
- if [ "$1" -eq  "0" ]
+if [ -z "$1" ]
    then
      NPM_TAG="--tag nightly"
  else
@@ -35,4 +35,3 @@ json -I -f package.json -e "this.version='$VERSION'"
 # Change the name
 json -I -f package.json -e "this.name='@typescript-deploys/monaco-typescript'"
 
-npm publish --access public $NPM_TAG
