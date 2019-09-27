@@ -4,7 +4,7 @@
 
 MONACO_TS_VERSION=${1:-nightly}
 
- if [ "$1" -eq  "0" ]
+ if [ -z "$1" ]
    then
      NPM_TAG="--tag nightly"
  else
