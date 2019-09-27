@@ -4,8 +4,11 @@ name: Daily builds of monaco-typescript and monaco of TypeScript
 # on: push
 
 on:
-  schedule:
-  - cron: "0 4 * * *"
+  # schedule:
+  # - cron: "0 4 * * *"
+  push:
+    branches:
+      - master
 
 jobs:
   build:
