@@ -1,45 +1,47 @@
+// @ts-check
+
 const { execSync } = require("child_process");
-const chalk = require("chalk");
 const args = process.argv.slice(2);
 
-const exec = (cmd) => {
-    console.log(chalk.gray(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`));
-    return execSync(cmd, opts);
+const exec = (cmd, opts) => {
+  console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);
+  return execSync(cmd, opts);
 };
 
-const step = (msg) => {
-    console.log("\n\n" + chalk.bold("- ") + msg);
-};
+const step = (msg) => console.log("\n\n - " + msg);
 
 function main() {
-  const monacoTypescriptTag = args[0] ? args[0] : "nightly"
+  const monacoTypescriptTag = args[0]
+  const tagPrefix = args[0].includes("http") ? "" : `--tag ${monacoTypescriptTag}`
 
-  console.log(chalk.bold("## Creating build of Monaco Editor"));
-  process.stdout.write(chalk.grey("> node publish-monaco-editor.js"));
+  console.log("## Creating build of Monaco Editor");
+  process.stdout.write("> node publish-monaco-editor.js");
 
   // Create a tarball of the current version
   step("Cloning the repo");
-  exec("git clone https://github.com/microsoft/monaco-editor.git");
+  // exec("git clone https://github.com/microsoft/monaco-editor.git");
 
   const execME = (cmd) => exec(cmd, { cwd: "monaco-editor" })
   const execRelease = (cmd) => exec(cmd, { cwd: "monaco-editor/release" })
+  
+  const user = exec("npm whoami").toString().trim()
 
-  step("Installing NPM");
+  step("Renaming");
+  execME(`json -I -f package.json -e "this.name='@${user}/monaco-editor'"`)
 
-  step("Setting the bridging");
-  execME(`json -I -f package.json -e "this.name='@typescript-deploys/monaco-editor'"`)
+  step("Overwriting the Monaco TypeScript with our new build + grabbing deps");
+  execME(`yarn add --dev "monaco-typescript@npm:@${user}/monaco-typescript@${monacoTypescriptTag}"`)
 
-  step("Overwriting the version of TypeScript in Monaco TypeScript");
-  execME(`yarn add --dev "monaco-typescript@npm:@typescript-deploys/monaco-typescript@${monacoTypescriptTag}"`)
-
-  step("npm run import-typescript");
-  const monacoTypeScriptVersion = execME("json -f node_modules/monaco-typescript/package.json version")
+  step("Matching the versions");
+  const monacoTypeScriptVersion = execME("json -f node_modules/monaco-typescript/package.json version").toString().trim()
   execME(`json -I -f package.json -e "this.version='${monacoTypeScriptVersion}'"`)
 
-  step("Setting the name");
+  step("Creating release folder");
   execME(`gulp release`)
 
-  execRelease(`npm publish --access public`)
+  // Run the final command inside the release dir
+  step("Publishing");
+  execRelease(`npm publish --access public ${tagPrefix}`)
 }
 
 main()

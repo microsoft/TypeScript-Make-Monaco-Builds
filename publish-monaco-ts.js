@@ -1,22 +1,24 @@
+// @ts-check
+
 const { execSync } = require("child_process");
-const chalk = require("chalk");
 const args = process.argv.slice(2);
 
-const exec = (cmd) => {
-    console.log(chalk.gray(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`));
+const exec = (cmd, opts) => {
+    console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);
     return execSync(cmd, opts);
 };
 
-const step = (msg) => {
-    console.log("\n\n" + chalk.bold("- ") + msg);
-};
+const step = (msg) => console.log("\n\n - " + msg);
 
 function main() {
-  const typescriptTag = args[0] ? args[0] : "next"
-  const tagPrefix = args[0] ? "" : "--tag nightly"
 
-  console.log(chalk.bold("## Creating build of Monaco TypeScript"));
-  process.stdout.write(chalk.grey("> node publish-monaco-ts.js"));
+  // TypeScript calls nightlies next... So should we.
+  const typescriptTag = args[0] ? args[0] : "next"
+  const tagPrefix = args[0].includes("http") ? "" : `--tag ${typescriptTag}`
+
+
+  console.log("## Creating build of Monaco TypeScript");
+  process.stdout.write("> node publish-monaco-ts.js");
 
   // Create a tarball of the current version
   step("Cloning the repo");
@@ -26,24 +28,27 @@ function main() {
   step("Installing NPM");
   execMTS("npm i")
 
+  // Grab the username from NPM
+  const user = execMTS("npm whoami").toString().trim()
+
   step("Overwriting the version of TypeScript in Monaco TypeScript");
   execMTS(`npm install --save "typescript@${typescriptTag}"`)
 
   step("npm run import-typescript");
-  execMTS(`npm install --save "typescript@${version}"`)
-
-  const version = args[1] 
+  
+  let version = args[1] 
   if (version) {
     step(`Setting the version to ${version}`);
   } else {
     step("Grabbing the version from the TypeScript build");
-    execMTS("json -f node_modules/typescript/package.json version")
+    version = execMTS("json -f node_modules/typescript/package.json version").toString().trim()
   }
+  execMTS(`json -I -f package.json -e "this.version='${version}'"`)
   
   step("Setting the name");
-  execMTS(`json -I -f package.json -e "this.name='@typescript-deploys/monaco-typescript'"`)
+  execMTS(`json -I -f package.json -e "this.name='@${user}/monaco-typescript'"`)
 
-  step("Setting the name");
+  step("Publishing to NPM");
   execMTS(`npm publish --access public ${tagPrefix}`)
 }
 
