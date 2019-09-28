@@ -19,7 +19,7 @@ function main() {
 
   // Create a tarball of the current version
   step("Cloning the repo");
-  // exec("git clone https://github.com/microsoft/monaco-editor.git");
+  exec("git clone https://github.com/microsoft/monaco-editor.git");
 
   const execME = (cmd) => exec(cmd, { cwd: "monaco-editor" })
   const execRelease = (cmd) => exec(cmd, { cwd: "monaco-editor/release" })
