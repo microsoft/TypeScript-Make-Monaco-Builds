@@ -49,7 +49,16 @@ function main() {
   execMTS(`json -I -f package.json -e "this.name='@${user}/monaco-typescript'"`)
 
   step("Publishing to NPM");
-  execMTS(`npm publish --access public ${tagPrefix}`)
+  try {
+    // Support this command failing when pushing a dupe
+    execMTS(`npm publish --access public ${tagPrefix}`)
+  } catch (error) {
+    console.log(error.message)
+    
+    if (!error.message.includes("previously published versions")) {
+      throw error
+    }
+  }
 }
 
 main()
