@@ -16,7 +16,6 @@ function main() {
   const typescriptTag = args[0] ? args[0] : "next"
   const tagPrefix = args[0].includes("http") ? "" : `--tag ${typescriptTag}`
 
-
   console.log("## Creating build of Monaco TypeScript");
   process.stdout.write("> node publish-monaco-ts.js");
 
