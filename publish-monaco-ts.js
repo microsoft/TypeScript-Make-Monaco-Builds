@@ -36,6 +36,14 @@ function main() {
 
   step("npm run import-typescript");
   
+  console.log("PR 40 - Fixits Support")
+  execMTS(`git fetch origin pull/40/head:fixits`)
+  execMTS(`git merge fixits`)
+
+  step("Adding Type Definitions and Source Map support");
+  execMTS(`json -I -f src/tsconfig.json -e "this.compilerOptions.declaration=true"`)
+  execMTS(`json -I -f src/tsconfig.json -e "this.compilerOptions.sourceMap=true"`)
+
   let version = args[1] 
   if (version) {
     step(`Setting the version to ${version}`);

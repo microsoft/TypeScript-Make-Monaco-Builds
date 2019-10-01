@@ -27,14 +27,6 @@ function main() {
   
   step("Merging in open PRs we want");
 
-  console.log("PR 40 - Fixits Support")
-  execME(`git fetch origin pull/40/head:fixits`)
-  execME(`git merge fixits`)
-
-  step("Adding Type Definitions and Source Map support");
-  execME(`json -I -f src/tsconfig.json -e "this.compilerOptions.declaration=true"`)
-  execME(`json -I -f src/tsconfig.json -e "this.compilerOptions.sourceMap=true"`)
-
   const user = exec("npm whoami").toString().trim()
 
   step("Renaming");
