@@ -17,23 +17,18 @@ jobs:
         node-version: '10.x'
         registry-url: 'https://registry.npmjs.org'
 
-    - name: Dump GitHub context
+    # Lets us use one-liner JSON manipulations on package.jsons
+    - run: "npm install -g json"
+
+    - name: Setup Monaco TypeScript
       env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: echo "$GITHUB_CONTEXT"
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        FULL_TAG_REF: ${{ github.ref }}
+      run: node ./publish-monaco-ts.js $(echo $FULL_TAG_REF | cut -d/ -f3)
 
-    # # Lets us use one-liner JSON manipulations on package.jsons
-    # - run: "npm install -g json"
-
-    # - name: Setup Monaco TypeScript
-    #   env:
-    #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-    #   run: node ./publish-monaco-ts.js next
-
-
-    # - name: Setup Monaco Editor
-    #   env:
-    #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-    #   run: node ./publish-monaco-editor.js next
+    - name: Setup Monaco Editor
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: node ./publish-monaco-editor.js $(echo $FULL_TAG_REF | cut -d/ -f3)
 
 
