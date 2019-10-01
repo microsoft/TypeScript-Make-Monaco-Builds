@@ -29,6 +29,4 @@ jobs:
     - name: Setup Monaco Editor
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: "node ./publish-monaco-editor.js $(echo $FULL_TAG_REF | cut -d/ -f3)""
-
-
+      run: "node ./publish-monaco-editor.js $(echo $FULL_TAG_REF | cut -d/ -f3)"
