@@ -1,7 +1,7 @@
 // @ts-check
 
 const { execSync } = require("child_process");
-const args = process.argv.slice(2) || [];
+const args = process.argv.slice(2);
 
 const exec = (cmd, opts) => {
     console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);

@@ -24,7 +24,7 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         FULL_TAG_REF: ${{ github.ref }}
-      run: "node ./publish-monaco-ts.js $(echo $FULL_TAG_REF | cut -d/ -f3)"
+      run: "node ./publish-monaco-ts.js $(echo $FULL_TAG_REF | cut -d/ -f3) "
 
     - name: Setup Monaco Editor
       env:

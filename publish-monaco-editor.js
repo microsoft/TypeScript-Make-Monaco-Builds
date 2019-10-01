@@ -12,7 +12,8 @@ const step = (msg) => console.log("\n\n - " + msg);
 
 function main() {
   const monacoTypescriptTag = args[0]
-  const tagPrefix = args[0].includes("http") ? "" : `--tag ${monacoTypescriptTag}`
+  const isPushedTag = process.env.GITHUB_EVENT_NAME === "push"
+  const tagPrefix = isPushedTag || args[0].includes("http") ? "" : `--tag ${monacoTypescriptTag}`
 
   console.log("## Creating build of Monaco Editor");
   process.stdout.write("> node publish-monaco-editor.js");
