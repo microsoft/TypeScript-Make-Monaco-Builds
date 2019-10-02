@@ -33,7 +33,8 @@ function main() {
   step("Overwriting the version of TypeScript in Monaco TypeScript");
   execMTS(`npm install --save "typescript@${typescriptTag}"`)
 
-  step("npm run import-typescript");
+  step("Updating the internal version of TS inside monaco");
+  execMTS("npm run import-typescript");
   
   let version = args[1] 
   if (version) {
