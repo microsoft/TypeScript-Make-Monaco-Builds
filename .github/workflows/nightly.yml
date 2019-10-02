@@ -1,11 +1,11 @@
 name: Daily builds of monaco-typescript and monaco of TypeScript
 
 # For testing
-on: push
+# on: push
 
-# on:
-#   schedule:
-#   - cron: "0 4 * * *"
+on:
+  schedule:
+  - cron: "0 4 * * *"
 
 jobs:
   build:
