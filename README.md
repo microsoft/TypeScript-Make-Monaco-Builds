@@ -27,3 +27,8 @@ curl https://api.github.com/repos/orta/make-monaco-builds/dispatches \
 It will generate a PR build to NPM with the a version like: `3.7.0-33290-47` where
 3.7.0 is the major version, 33290 is the PR and 47 is the index of the most recent comment
 from ts-bot which includes a static build of a pull request.
+
+### Tag Builds
+
+When you want to trigger a build for a /specific/ build of TypeScript, you can ship a tag to this
+repo with the same version which is available on the TypeScript npm module.
