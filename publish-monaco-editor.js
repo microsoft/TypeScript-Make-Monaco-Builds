@@ -5,7 +5,11 @@ const args = process.argv.slice(2);
 
 const exec = (cmd, opts) => {
   console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);
-  return execSync(cmd, opts);
+  try {
+    return execSync(cmd, opts);
+  } catch (error) {
+    console.error(error.message)
+  }
 };
 
 const step = (msg) => console.log("\n\n - " + msg);
@@ -45,6 +49,8 @@ function main() {
   // Run the final command inside the release dir
   step("Publishing");
   execRelease(`npm publish --access public ${tagPrefix}`)
+
+  step("Done!")
 }
 
 main()
