@@ -25,6 +25,11 @@ function main() {
   exec("git clone https://github.com/microsoft/monaco-typescript.git");
 
   const execMTS = (cmd) => exec(cmd, { cwd: "monaco-typescript" })
+
+  console.log("PR 40 - Fixits Support")
+  execMTS(`git fetch origin pull/48/head:fixits-plus`)
+  execMTS(`git merge fixits-plus`)
+
   step("Installing NPM");
   execMTS("npm i")
 
