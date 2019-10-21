@@ -13,47 +13,46 @@ on: repository_dispatch
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '10.x'
-        registry-url: 'https://registry.npmjs.org'
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "10.x"
+          registry-url: "https://registry.npmjs.org"
 
-    # Lets us use one-liner JSON manipulations on package.jsons
-    - run: "npm install -g json"
+      # Lets us use one-liner JSON manipulations on package.jsons
+      - run: "npm install -g json"
 
-    - name: Publish PR Build
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish PR Build
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      run: | 
-        yarn install
+        run: |
+          yarn install
 
-        PULL_REQUEST_NUMBER=$(json -f $GITHUB_EVENT_PATH action)
-        echo "Publishing Monaco based on $PULL_REQUEST_NUMBER"
+          PULL_REQUEST_NUMBER=$(json -f $GITHUB_EVENT_PATH action)
+          echo "Publishing Monaco based on $PULL_REQUEST_NUMBER"
 
-        ZIP_FILE=$(node pulls/echo-typescript-url.js $PULL_REQUEST_NUMBER)
-        echo "Using zip file from:"
-        echo $ZIP_FILE
+          ZIP_FILE=$(node pulls/echo-typescript-url.js $PULL_REQUEST_NUMBER)
+          echo "Using zip file from:"
+          echo $ZIP_FILE
 
-        SEMVER_NUMBER=$(node pulls/echo-release-version.js $PULL_REQUEST_NUMBER)
-        echo "Building TS Monaco $SEMVER_NUMBER"
+          SEMVER_NUMBER=$(node pulls/echo-release-version.js $PULL_REQUEST_NUMBER)
+          echo "Building TS Monaco $SEMVER_NUMBER"
 
-        node ./publish-monaco-ts.js $ZIP_FILE $SEMVER_NUMBER
+          node ./publish-monaco-ts.js $ZIP_FILE $SEMVER_NUMBER
 
-        echo "Building Monaco Editor with the new TS Monaco"
-        node ./publish-monaco-editor.js $SEMVER_NUMBER
+          echo "Building Monaco Editor with the new TS Monaco"
+          node ./publish-monaco-editor.js $SEMVER_NUMBER
 
-        echo ""
-        echo ""
-        echo ""
-        echo "https://www.typescriptlang.org/play/?ts=$SEMVER_NUMBER"
-        echo ""
-        echo ""
-        echo ""
-        echo "Commenting back on the PR"
-        node pulls/comment-on-release.js $PULL_REQUEST_NUMBER $SEMVER_NUMBER
+          echo ""
+          echo ""
+          echo ""
+          echo "https://www.typescriptlang.org/play/?ts=$SEMVER_NUMBER"
+          echo ""
+          echo ""
+          echo ""
+          echo "Commenting back on the PR"
+          node pulls/comment-on-release.js $PULL_REQUEST_NUMBER $SEMVER_NUMBER

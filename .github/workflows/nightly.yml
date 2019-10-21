@@ -5,32 +5,28 @@ name: Daily builds of monaco-typescript and monaco of TypeScript
 
 on:
   schedule:
-  - cron: "0 4 * * *"
+    - cron: "0 4 * * *"
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '10.x'
-        registry-url: 'https://registry.npmjs.org'
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "10.x"
+          registry-url: "https://registry.npmjs.org"
 
-    # Lets us use one-liner JSON manipulations on package.jsons
-    - run: "npm install -g json"
+      # Lets us use one-liner JSON manipulations on package.jsons
+      - run: "npm install -g json"
 
-    - name: Setup Monaco TypeScript
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: node ./publish-monaco-ts.js next
+      - name: Setup Monaco TypeScript
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: node ./publish-monaco-ts.js next
 
-
-    - name: Setup Monaco Editor
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: node ./publish-monaco-editor.js next
-
-
+      - name: Setup Monaco Editor
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: node ./publish-monaco-editor.js next
