@@ -48,7 +48,7 @@ octokit.paginate(options).then(
       console.error(`Updating comment ${messageWithTGZ.id} on microsoft/TypeScript#${prNumber}`);
       const newBody = `${messageWithTGZ.body}\n\n---\n\nThere is also a playground [for this build](https://www.typescriptlang.org/play/index.html?ts=${npmTag}).`;
 
-      octokit.pulls.updateComment({
+      octokit.issues.updateComment({
         comment_id: messageWithTGZ.id,
         body: newBody,
         owner: "microsoft",
