@@ -55,7 +55,7 @@ octokit.paginate(options).then(
       const newBody = `${body}\n\n---\n\nThere is also a playground [for this build](https://www.typescriptlang.org/play/index.html?ts=${npmTag}).`;
      
       octokit.pulls.updateComment({
-        comment_id: messageWithTGZ,
+        comment_id: messageWithTGZ.id,
         body: newBody,
         owner: "microsoft",
         repo: "TypeScript"
