@@ -26,9 +26,13 @@ function main() {
 
   const execMTS = (cmd) => exec(cmd, { cwd: "monaco-typescript" })
 
-  console.log("PR 40 - Fixits Support")
-  execMTS(`git fetch origin pull/48/head:fixits-plus`)
-  execMTS(`git merge fixits-plus`)
+  console.log("PR 48 - Rich diagnostics")
+  execMTS(`git fetch origin pull/48/head:diags-plus`)
+  execMTS(`git merge diags-plus`)
+  
+  console.log("PR 52 - Improved docs in popovers")
+  execMTS(`git fetch origin pull/52/head:docs-plus`)
+  execMTS(`git merge docs-plus`)
 
   step("Installing NPM");
   execMTS("npm i")
