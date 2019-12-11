@@ -26,6 +26,9 @@ function main() {
 
   const execMTS = (cmd) => exec(cmd, { cwd: "monaco-typescript" })
 
+  execMTS(`git config --global user.email "you@example.com"`)
+  execMTS(`git config --global user.name "Your Name"`)
+
   console.log("PR 48 - Rich diagnostics")
   execMTS(`git fetch origin pull/48/head:diags-plus`)
   execMTS(`git merge diags-plus`)
