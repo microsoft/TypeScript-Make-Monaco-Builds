@@ -29,14 +29,6 @@ function main() {
   execMTS(`git config --global user.email "you@example.com"`)
   execMTS(`git config --global user.name "Your Name"`)
 
-  console.log("PR 48 - Rich diagnostics")
-  execMTS(`git fetch origin pull/48/head:diags-plus`)
-  execMTS(`git merge diags-plus`)
-  
-  console.log("PR 52 - Improved docs in popovers")
-  execMTS(`git fetch origin pull/52/head:docs-plus`)
-  execMTS(`git merge docs-plus`)
-
   step("Installing NPM");
   execMTS("npm i")
 
