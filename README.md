@@ -32,3 +32,12 @@ from ts-bot which includes a static build of a pull request.
 
 When you want to trigger a build for a /specific/ build of TypeScript, you can ship a tag to this
 repo with the same version which is available on the TypeScript npm module.
+
+### CDN'd
+
+Every release has a corresponding upload to [azure blob storage](https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/57bfeeed-c34a-4ffd-a06b-ccff27ac91b8/resourceGroups/Playground-Static-Hosting/providers/Microsoft.Storage/storageAccounts/tswebinfra/overview) of:
+
+- the NPM module contents of the TypeScript version (so you can grab lib files)
+- the NPM module contents of monaco-typescript, so playgrounds can use custom builds of typescript
+
+There is an index of all uploaded TypeScript and Monaco-Editor [version here](https://tswebinfra.blob.core.windows.net/indexes/indexes.json).
