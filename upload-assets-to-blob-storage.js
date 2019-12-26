@@ -19,8 +19,8 @@ function main() {
   console.log("## Creating build of Monaco Editor");
   process.stdout.write("> node publish-monaco-editor.js");
 
-  const monacoEditorPackageJSON = JSON.parse(readFileSync("monaco-editor/package.json", "utf8"))
-  const safeMonacoEditorPackage = monacoEditorPackageJSON.version.replace(/\./g, '-');
+  // const monacoEditorPackageJSON = JSON.parse(readFileSync("monaco-editor/package.json", "utf8"))
+  // const safeMonacoEditorPackage = monacoEditorPackageJSON.version.replace(/\./g, '-');
 
   const typescriptPackageJSON = JSON.parse(readFileSync("monaco-editor/node_modules/typescript/package.json", "utf8"))
   const safeTypeScriptPackage = typescriptPackageJSON.version.replace(/\./g, '-');
@@ -29,20 +29,18 @@ function main() {
 
   // Upload the full monaco-editor
   step("Uploading Monaco");
+  exec("rm -rf releases")
   exec("mkdir releases")
-  exec("mkdir releases/monaco")
-  exec(`cp -r monaco-editor/release releases/monaco/${safeMonacoEditorPackage}`)
-  exec(`az storage blob upload-batch -s releases/monaco/ -d monaco-editor`)
+  exec(`mkdir releases/${safeTypeScriptPackage}`)
+  exec(`cp -r monaco-editor/release releases/${safeTypeScriptPackage}/monaco/`)
 
   step("Uploading TypeScript");
-  exec("mkdir releases/ts")
-  exec(`cp -r monaco-editor/node_modules/typescript releases/ts/${safeMonacoEditorPackage}`)
-  exec(`az storage blob upload-batch -s releases/ts/ -d typescript`)
+  exec(`cp -r monaco-editor/node_modules/typescript releases/${safeTypeScriptPackage}/typescript`)
+  exec(`az storage blob upload-batch -s releases/ -d cdn`)
 
   step("Updating an index");
   exec(`az storage blob download -c indexes -n indexes.json -f indexes.json`)
-  exec(`json -I -f indexes.json -e "this.ts = Array.from(new Set([...this.ts, '${safeTypeScriptPackage}'])).sort()"`)
-  exec(`json -I -f indexes.json -e "this.monaco = Array.from(new Set([...this.monaco,'${safeMonacoEditorPackage}'])).sort()"`)
+  exec(`json -I -f indexes.json -e "this.versions = Array.from(new Set([...this.versions, '${safeTypeScriptPackage}'])).sort()"`)
   exec(`az storage blob upload  -f indexes.json -c indexes -n indexes.json`)
 
   step("Done!");
