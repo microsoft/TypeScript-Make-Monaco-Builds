@@ -19,11 +19,8 @@ function main() {
   console.log("## Creating build of Monaco Editor");
   process.stdout.write("> node publish-monaco-editor.js");
 
-  // const monacoEditorPackageJSON = JSON.parse(readFileSync("monaco-editor/package.json", "utf8"))
-  // const safeMonacoEditorPackage = monacoEditorPackageJSON.version.replace(/\./g, '-');
-
   const typescriptPackageJSON = JSON.parse(readFileSync("monaco-editor/node_modules/typescript/package.json", "utf8"))
-  const safeTypeScriptPackage = typescriptPackageJSON.version.replace(/\./g, '-');
+  const safeTypeScriptPackage = typescriptPackageJSON.version;
 
   //  Make sure we have some kind of index
 

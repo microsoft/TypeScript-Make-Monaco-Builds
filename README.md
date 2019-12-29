@@ -44,5 +44,5 @@ There is an index of all uploaded TypeScript and Monaco-Editor [version here](ht
 
 You can use the values from the `indexes.json` to make links like:
 
-- https://tswebinfra.blob.core.windows.net/cdn/3-7-3/typescript/package.json
-- https://tswebinfra.blob.core.windows.net/cd/3-7-3/monaco-editor/package.json
+- https://tswebinfra.blob.core.windows.net/cdn/3.7.3/typescript/package.json
+- https://tswebinfra.blob.core.windows.net/cd/3.7.3/monaco-editor/package.json
