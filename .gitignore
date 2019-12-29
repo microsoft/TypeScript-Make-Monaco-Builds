@@ -62,3 +62,5 @@ typings/
 
 monaco-typescript
 monaco-editor
+releases
+indexes.json

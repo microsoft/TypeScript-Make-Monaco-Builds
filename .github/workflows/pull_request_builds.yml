@@ -24,6 +24,9 @@ jobs:
       # Lets us use one-liner JSON manipulations on package.jsons
       - run: "npm install -g json"
 
+      # For Azure uploads
+      - run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
       - name: Publish PR Build
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -57,3 +60,10 @@ jobs:
           echo ""
           echo "Commenting back on the PR"
           node pulls/comment-on-release.js $PULL_REQUEST_NUMBER $SEMVER_NUMBER
+
+
+      - name: Upload to Azure
+        env:
+          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+        run: node ./upload-assets-to-blob-storage.js

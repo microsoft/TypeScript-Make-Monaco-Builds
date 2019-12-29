@@ -20,6 +20,9 @@ jobs:
 
       # Lets us use one-liner JSON manipulations on package.jsons
       - run: "npm install -g json"
+      
+      # For Azure uploads
+      - run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
       - name: Setup Monaco TypeScript
         env:
@@ -30,3 +33,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: node ./publish-monaco-editor.js next
+
+      - name: Upload to Azure
+        env:
+          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
+        run: node ./upload-assets-to-blob-storage.js
