@@ -40,7 +40,8 @@ Every release has a corresponding upload to [azure blob storage](https://ms.port
 - the NPM module contents of the TypeScript version (so you can grab lib files)
 - the NPM module contents of monaco-typescript, so playgrounds can use custom builds of typescript
 
-There is an index of all uploaded TypeScript and Monaco-Editor [version here](https://tswebinfra.blob.core.windows.net/indexes/indexes.json). It's important to note that Monaco Editor is indexed by the version of TypeScript it supports - not the version of the monaco-editor package.
+There are two indexes of all uploaded TypeScript and Monaco-Editor versions. It's important to note that Monaco Editor
+is indexed by the version of TypeScript it supports - not the version of the monaco-editor package.
 
 - Releases: [`https://tswebinfra.blob.core.windows.net/indexes/releases.json`](https://tswebinfra.blob.core.windows.net/indexes/releases.json)
 - Pre-Releases: [`https://tswebinfra.blob.core.windows.net/indexes/pre-releases.json`](https://tswebinfra.blob.core.windows.net/indexes/pre-releases.json)
