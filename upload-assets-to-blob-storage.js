@@ -1,7 +1,6 @@
-const { readFileSync } = require("fs");
-
 // @ts-check
 
+const { readFileSync } = require("fs");
 const { execSync } = require("child_process");
 
 const exec = (cmd, opts) => {
@@ -19,10 +18,8 @@ function main() {
   console.log("## Creating build of Monaco Editor");
   process.stdout.write("> node publish-monaco-editor.js");
 
-  const typescriptPackageJSON = JSON.parse(readFileSync("monaco-editor/node_modules/typescript/package.json", "utf8"))
+  const typescriptPackageJSON = JSON.parse(readFileSync("monaco-editor/package.json", "utf8"))
   const safeTypeScriptPackage = typescriptPackageJSON.version;
-
-  //  Make sure we have some kind of index
 
   // Upload the full monaco-editor
   step("Uploading Monaco");
@@ -36,9 +33,13 @@ function main() {
   exec(`az storage blob upload-batch -s releases/ -d cdn`)
 
   step("Updating an index");
-  exec(`az storage blob download -c indexes -n indexes.json -f indexes.json`)
+  //  Make sure we have some kind of index
+  const isPreRelease = safeTypeScriptPackage.includes("-")
+  const filename = isPreRelease ? "pre-releases.json" : "releases.json"
+
+  exec(`az storage blob download -c indexes -n ${filename}.json -f ${filename}.json`)
   exec(`json -I -f indexes.json -e "this.versions = Array.from(new Set([...this.versions, '${safeTypeScriptPackage}'])).sort()"`)
-  exec(`az storage blob upload  -f indexes.json -c indexes -n indexes.json`)
+  exec(`az storage blob upload  -f ${filename}.json -c indexes -n ${filename}.json`)
 
   step("Done!");
 }
