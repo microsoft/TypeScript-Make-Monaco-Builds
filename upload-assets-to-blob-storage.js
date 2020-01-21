@@ -37,9 +37,9 @@ function main() {
   const isPreRelease = safeTypeScriptPackage.includes("-")
   const filename = isPreRelease ? "pre-releases.json" : "releases.json"
 
-  exec(`az storage blob download -c indexes -n ${filename}.json -f ${filename}.json`)
+  exec(`az storage blob download -c indexes -n ${filename}.json -f ${filename}`)
   exec(`json -I -f indexes.json -e "this.versions = Array.from(new Set([...this.versions, '${safeTypeScriptPackage}'])).sort()"`)
-  exec(`az storage blob upload  -f ${filename}.json -c indexes -n ${filename}.json`)
+  exec(`az storage blob upload  -f ${filename}.json -c indexes -n ${filename}`)
 
   step("Done!");
 }
