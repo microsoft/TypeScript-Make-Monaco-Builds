@@ -3,6 +3,9 @@
 const { readFileSync } = require("fs");
 const { execSync } = require("child_process");
 
+const optionalTag = process.argv.slice(2)[0];
+
+
 const exec = (cmd, opts) => {
   console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);
   try {
@@ -27,9 +30,19 @@ function main() {
   exec("mkdir releases")
   exec(`mkdir releases/${safeTypeScriptPackage}`)
   exec(`cp -r monaco-editor/release releases/${safeTypeScriptPackage}/monaco/`)
+  
+  // This is basically for nightlies, but if a 2nd arg is passed then we include a duped copy of the 
+  // monaco-editor and monaco-typescript with the tag which was passed as an arg to the script
+  if (optionalTag) {
+    exec(`cp -r monaco-editor/release releases/${optionalTag}/monaco/`)
+  }
 
   step("Uploading TypeScript");
   exec(`cp -r monaco-editor/node_modules/typescript releases/${safeTypeScriptPackage}/typescript`)
+  if (optionalTag) {
+    exec(`cp -r monaco-editor/node_modules/typescript releases/${optionalTag}/typescript`)
+  }
+
   exec(`az storage blob upload-batch -s releases/ -d cdn`)
 
   step("Updating an index");
