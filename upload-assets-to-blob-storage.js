@@ -34,6 +34,7 @@ function main() {
   // This is basically for nightlies, but if a 2nd arg is passed then we include a duped copy of the 
   // monaco-editor and monaco-typescript with the tag which was passed as an arg to the script
   if (optionalTag) {
+    exec(`mkdir releases/${optionalTag}`)
     exec(`cp -r monaco-editor/release releases/${optionalTag}/monaco/`)
   }
 
@@ -51,7 +52,7 @@ function main() {
   const filename = isPreRelease ? "pre-releases.json" : "releases.json"
 
   exec(`az storage blob download -c indexes -n ${filename} -f ${filename}`)
-  exec(`json -I -f indexes.json -e "this.versions = Array.from(new Set([...this.versions, '${safeTypeScriptPackage}'])).sort()"`)
+  exec(`json -I -f ${filename} -e "this.versions = Array.from(new Set([...this.versions, '${safeTypeScriptPackage}'])).sort()"`)
   exec(`az storage blob upload  -f ${filename} -c indexes -n ${filename}`)
 
   step("Done!");
