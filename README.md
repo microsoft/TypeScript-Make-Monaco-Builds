@@ -43,10 +43,10 @@ Every release has a corresponding upload to [azure blob storage](https://ms.port
 There are two indexes of all uploaded TypeScript and Monaco-Editor versions. It's important to note that Monaco Editor
 is indexed by the version of TypeScript it supports - not the version of the monaco-editor package.
 
-- Releases: [`https://tswebinfra.blob.core.windows.net/indexes/releases.json`](https://tswebinfra.blob.core.windows.net/indexes/releases.json)
-- Pre-Releases: [`https://tswebinfra.blob.core.windows.net/indexes/pre-releases.json`](https://tswebinfra.blob.core.windows.net/indexes/pre-releases.json)
+- Releases: [`https://typescript.azureedge.net/indexes/releases.json`](https://typescript.azureedge.net/indexes/releases.json)
+- Pre-Releases: [`https://typescript.azureedge.net/indexes/pre-releases.json`](https://typescript.azureedge.net/indexes/pre-releases.json)
 
 You can use the values from the two indexes to make links like:
 
-- https://tswebinfra.blob.core.windows.net/cdn/3.7.4/monaco/package.json
-- https://tswebinfra.blob.core.windows.net/cdn/3.7.4/typescript/package.json
+- https://typescript.azureedge.net/cdn/3.7.4/monaco/package.json
+- https://typescript.azureedge.net/cdn/3.7.4/typescript/package.json
