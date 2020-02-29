@@ -29,6 +29,10 @@ function main() {
   execMTS(`git config --global user.email "you@example.com"`)
   execMTS(`git config --global user.name "Your Name"`)
 
+  console.log("PR 57 - DTS fixes")		
+  execMTS(`git fetch origin pull/57/head:inline`)		
+  execMTS(`git merge inline`)		
+
   step("Installing NPM");
   execMTS("npm i")
 
