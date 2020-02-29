@@ -50,3 +50,11 @@ You can use the values from the two indexes to make links like:
 
 - https://typescript.azureedge.net/cdn/3.7.4/monaco/package.json
 - https://typescript.azureedge.net/cdn/3.7.4/typescript/package.json
+
+---
+
+### Re-deploying a tag
+
+Delete the local tag, re-create it, and force push it up:
+
+> `git tag -d 3.8.2 && git tag 3.8.2 && git push origin 3.8.2 -f`
