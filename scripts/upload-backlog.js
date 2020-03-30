@@ -20,10 +20,10 @@ const step = msg => console.log("\n\n - " + msg);
 
 const allMetadata = {
   // Nightly: { monaco: "next", module: "@typescript-deploys/monaco-editor" },
-  "3.7.3": { monaco: "0.19.0" },
-  "3.6.3": { monaco: "0.18.1" },
-  "3.5.1": { monaco: "0.17.1" },
-  "3.3.3": { monaco: "0.16.1" },
+  // "3.7.3": { monaco: "0.19.0" },
+  // "3.6.3": { monaco: "0.18.1" },
+  // "3.5.1": { monaco: "0.17.1" },
+  // "3.3.3": { monaco: "0.16.1" },
   "3.1.6": { monaco: "0.15.6" },
   "3.0.1": { monaco: "0.14.3" },
   "2.8.1": { monaco: "0.13.1" },
@@ -76,6 +76,10 @@ async function main() {
   exec("rm releases/*.tgz")
 
   step("Uploading folders to CDN")
+  
+  // AZURE_STORAGE_ACCOUNT and AZURE_STORAGE_KEY need to be set up
+  // They are here: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/57bfeeed-c34a-4ffd-a06b-ccff27ac91b8/resourceGroups/Playground-Static-Hosting/providers/Microsoft.Storage/storageAccounts/tswebinfra/keys
+
   exec(`az storage blob upload-batch -s releases/ -d cdn`)
   
   step("Done!");
