@@ -36,6 +36,10 @@ function main() {
   step("Installing NPM");
   execMTS("npm i")
 
+  // Grab https://github.com/microsoft/monaco-typescript/pull/59 for 3.9 nightlies
+  execMTS("git fetch origin pull/59/head:ts-merge-require")
+  execMTS("git merge ts-merge-require")
+
   // Grab the username from NPM
   const user = execMTS("npm whoami").toString().trim()
 
