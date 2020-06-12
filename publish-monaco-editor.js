@@ -29,7 +29,7 @@ function main() {
   const execME = cmd => exec(cmd, { cwd: "monaco-editor" });
   const execRelease = cmd => exec(cmd, { cwd: "monaco-editor/release" });
 
-  step("Merging in open PRs we want");
+  // step("Merging in open PRs we want");
 
   const user = exec("npm whoami")
     .toString()

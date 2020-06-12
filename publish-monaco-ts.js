@@ -29,16 +29,15 @@ function main() {
   execMTS(`git config --global user.email "you@example.com"`)
   execMTS(`git config --global user.name "Your Name"`)
 
-  console.log("PR 57 - DTS fixes")		
-  execMTS(`git fetch origin pull/57/head:inline`)		
-  execMTS(`git merge inline`)		
 
   step("Installing NPM");
   execMTS("npm i")
 
-  // Grab https://github.com/microsoft/monaco-typescript/pull/59 for 3.9 nightlies
-  execMTS("git fetch origin pull/59/head:ts-merge-require")
-  execMTS("git merge ts-merge-require")
+  execMTS("git fetch")
+  // 3.9 needs this require change
+  execMTS("git merge origin/allow_additional_req")
+  // Use the most advanced DTS possible
+  execMTS("git merge origin/bundled_esnext_min")
 
   // Grab the username from NPM
   const user = execMTS("npm whoami").toString().trim()
