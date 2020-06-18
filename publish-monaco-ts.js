@@ -38,6 +38,8 @@ function main() {
   execMTS("git merge origin/allow_additional_req")
   // Use the most advanced DTS possible
   execMTS("git merge origin/bundled_esnext_min")
+  // https://github.com/microsoft/monaco-typescript/pull/62
+  execMTS("git merge origin/fix_empty_error")
 
   // Grab the username from NPM
   const user = execMTS("npm whoami").toString().trim()
