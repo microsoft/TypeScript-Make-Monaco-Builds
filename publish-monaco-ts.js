@@ -1,6 +1,7 @@
 // @ts-check
 
 const { execSync } = require("child_process");
+const { existsSync, readFileSync, writeFileSync } = require("fs");
 const args = process.argv.slice(2);
 
 const exec = (cmd, opts) => {
@@ -20,6 +21,8 @@ function main() {
   console.log("## Creating build of Monaco TypeScript");
   process.stdout.write("> node publish-monaco-ts.js");
 
+  if (existsSync("monaco-typescript")) exec("rm -rf monaco-typescript")
+
   // Create a tarball of the current version
   step("Cloning the repo");
   exec("git clone https://github.com/microsoft/monaco-typescript.git");
@@ -36,10 +39,20 @@ function main() {
   execMTS("git fetch")
   // 3.9 needs this require change
   execMTS("git merge origin/allow_additional_req")
-  // Use the most advanced DTS possible
-  execMTS("git merge origin/bundled_esnext_min")
+
   // https://github.com/microsoft/monaco-typescript/pull/62
   execMTS("git merge origin/fix_empty_error")
+
+  // https://github.com/microsoft/monaco-typescript/pull/64
+  execMTS("git merge origin/let_ts_resolve_libs")
+
+  // Manually patch the monaco TS importer to include all dts files up to esnext
+  // this is re-implementing https://github.com/microsoft/monaco-typescript/pull/61
+  // but after @64 is merged.
+  step("Patching import TypeScript script to use esnext")
+  const importScript = readFileSync("monaco-typescript/scripts/importTypescript.js", "utf8")
+  if(!importScript) throw new Error("No import script found")
+  writeFileSync("monaco-typescript/scripts/importTypescript.js", importScript.replace(`enqueue('es2015')`, `enqueue('esnext')`))
 
   // Grab the username from NPM
   const user = execMTS("npm whoami").toString().trim()
