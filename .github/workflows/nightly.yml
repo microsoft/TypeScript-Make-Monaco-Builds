@@ -5,7 +5,7 @@ name: Daily builds of monaco-typescript and monaco of TypeScript
 
 on:
   schedule:
-    - cron: "0 4 * * *"
+    - cron: "0 8 * * *"
 
 jobs:
   build:
