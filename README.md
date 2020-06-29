@@ -15,8 +15,8 @@ GitHub auth token
 This workflow is triggered from an API call where XXX is your token
 and YYY is the PR that it should look at.
 
-```
-curl https://api.github.com/repos/orta/make-monaco-builds/dispatches \
+```sh
+curl https://api.github.com/repos/microsoft/typescript-make-monaco-builds/dispatches \
   -XPOST \
    -H 'Content-Type: application/json' \
    -H 'Accept: application/vnd.github.everest-preview+json' \
