@@ -46,14 +46,6 @@ function main() {
   // https://github.com/microsoft/monaco-typescript/pull/64
   execMTS("git merge origin/let_ts_resolve_libs")
 
-  // Manually patch the monaco TS importer to include all dts files up to esnext
-  // this is re-implementing https://github.com/microsoft/monaco-typescript/pull/61
-  // but after @64 is merged.
-  step("Patching import TypeScript script to use esnext")
-  const importScript = readFileSync("monaco-typescript/scripts/importTypescript.js", "utf8")
-  if(!importScript) throw new Error("No import script found")
-  writeFileSync("monaco-typescript/scripts/importTypescript.js", importScript.replace(`enqueue('es2015')`, `enqueue('esnext')`))
-
   // Grab the username from NPM
   const user = execMTS("npm whoami").toString().trim()
 
