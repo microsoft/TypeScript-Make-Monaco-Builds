@@ -6,6 +6,7 @@ name: Daily builds of monaco-typescript and monaco of TypeScript
 on:
   schedule:
     - cron: "0 8 * * *"
+  workflow_dispatch:
 
 jobs:
   build:

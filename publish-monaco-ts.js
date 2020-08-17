@@ -37,11 +37,6 @@ function main() {
   execMTS("npm i")
 
   execMTS("git fetch")
-  // 3.9 needs this require change
-  execMTS("git merge origin/allow_additional_req")
-
-  // https://github.com/microsoft/monaco-typescript/pull/62
-  execMTS("git merge origin/fix_empty_error")
 
   // https://github.com/microsoft/monaco-typescript/pull/64
   execMTS("git merge origin/let_ts_resolve_libs")
