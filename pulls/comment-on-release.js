@@ -46,7 +46,7 @@ octokit.paginate(options).then(
     // If we find it and it's not sneakily been edit already
     if (messageWithTGZ && !messageWithTGZ.body.includes("playground")) {
       console.error(`Updating comment ${messageWithTGZ.id} on microsoft/TypeScript#${prNumber}`);
-      const newBody = `${messageWithTGZ.body}\n\n---\n\nThere is also a playground [for this build](https://www.typescriptlang.org/play/index.html?ts=${npmTag}).`;
+      const newBody = `${messageWithTGZ.body}\n\n---\n\nThere is also a playground [for this build](https://www.staging-typescript.org/play?ts=${npmTag}).`;
 
       octokit.issues.updateComment({
         comment_id: messageWithTGZ.id,
