@@ -55,7 +55,7 @@ function main() {
   exec(`json -I -f ${filename} -e "this.versions = Array.from(new Set([...this.versions, '${safeTypeScriptPackage}'])).sort()"`)
   exec(`az storage blob upload  -f ${filename} -c indexes -n ${filename}`)
 
-  writeFileSync("releases/next.json", `{ 'version': '${typescriptPackageJSON.version}' }`)
+  writeFileSync("releases/next.json", JSON.stringify({ version: typescriptPackageJSON.version }))
   exec(`az storage blob upload  -f "releases/next.json" -c indexes -n "releases/next.json"`)
 
   step("Done!");
