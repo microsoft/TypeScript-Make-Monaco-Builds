@@ -1,7 +1,7 @@
 // @ts-check
 
 const { execSync } = require("child_process");
-const { existsSync, readFileSync, writeFileSync } = require("fs");
+const { existsSync } = require("fs");
 const args = process.argv.slice(2);
 
 const exec = (cmd, opts) => {
@@ -31,7 +31,6 @@ function main() {
 
   execMTS(`git config --global user.email "you@example.com"`)
   execMTS(`git config --global user.name "Your Name"`)
-
 
   step("Installing NPM");
   execMTS("npm i")

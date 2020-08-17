@@ -1,6 +1,6 @@
 // @ts-check
 
-const { readFileSync } = require("fs");
+const { readFileSync, writeFileSync } = require("fs");
 const { execSync } = require("child_process");
 
 const optionalTag = process.argv.slice(2)[0];
@@ -18,8 +18,8 @@ const exec = (cmd, opts) => {
 const step = msg => console.log("\n\n - " + msg);
 
 function main() {
-  console.log("## Creating build of Monaco Editor");
-  process.stdout.write("> node publish-monaco-editor.js");
+  console.log("## Uploading build of Monaco Editor");
+  process.stdout.write("> node upload-assets-to-blob-storage.js");
 
   const typescriptPackageJSON = JSON.parse(readFileSync("monaco-editor/package.json", "utf8"))
   const safeTypeScriptPackage = typescriptPackageJSON.version;
@@ -54,6 +54,9 @@ function main() {
   exec(`az storage blob download -c indexes -n ${filename} -f ${filename}`)
   exec(`json -I -f ${filename} -e "this.versions = Array.from(new Set([...this.versions, '${safeTypeScriptPackage}'])).sort()"`)
   exec(`az storage blob upload  -f ${filename} -c indexes -n ${filename}`)
+
+  writeFileSync("releases/next.json", `{ 'version': '${typescriptPackageJSON.version}' }`)
+  exec(`az storage blob upload  -f "releases/next.json" -c indexes -n "releases/next.json"`)
 
   step("Done!");
 }
