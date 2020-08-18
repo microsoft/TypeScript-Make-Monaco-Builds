@@ -45,7 +45,7 @@ is indexed by the version of TypeScript it supports - not the version of the mon
 
 - Releases: [`https://typescript.azureedge.net/indexes/releases.json`](https://typescript.azureedge.net/indexes/releases.json)
 - Pre-Releases: [`https://typescript.azureedge.net/indexes/pre-releases.json`](https://typescript.azureedge.net/indexes/pre-releases.json)
-- Next: (provides a redirect to the latest nightly version) [`https://typescript.azureedge.net/indexes/next.json`](https://typescript.azureedge.net/indexes/next.json)
+- Next: (provides a redirect to the latest nightly version) <br/>[`https://typescript.azureedge.net/indexes/next.json`](https://typescript.azureedge.net/indexes/next.json)
 
 You can use the values from the two indexes to make links like:
 

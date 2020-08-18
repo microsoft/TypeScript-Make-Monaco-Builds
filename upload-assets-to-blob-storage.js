@@ -56,7 +56,7 @@ function main() {
   exec(`az storage blob upload  -f ${filename} -c indexes -n ${filename}`)
 
   writeFileSync("releases/next.json", JSON.stringify({ version: typescriptPackageJSON.version }))
-  exec(`az storage blob upload  -f "releases/next.json" -c indexes -n "releases/next.json"`)
+  exec(`az storage blob upload  -f "releases/next.json" -c indexes -n "next.json"`)
 
   step("Done!");
 }
