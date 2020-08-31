@@ -37,8 +37,12 @@ function main() {
 
   execMTS("git fetch")
 
-  // https://github.com/microsoft/monaco-typescript/pull/64
-  execMTS("git merge origin/let_ts_resolve_libs")
+  try {
+    // https://github.com/microsoft/monaco-typescript/pull/65
+    execMTS("git merge origin/custom_worker")
+  } catch (error) {
+    // NOOP because this means it was merged
+  }
 
   // Grab the username from NPM
   const user = execMTS("npm whoami").toString().trim()
