@@ -4,12 +4,23 @@ const { execSync } = require("child_process");
 const { existsSync } = require("fs");
 const args = process.argv.slice(2);
 
+// So you can run this locally
+const dontDeploy = !!process.env.SKIP_DEPLOY
+
 const exec = (cmd, opts) => {
     console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);
     return execSync(cmd, opts);
 };
 
 const step = (msg) => console.log("\n\n - " + msg);
+
+const failableMergeBranch = (exec, name) => {
+  try {
+    exec(`git merge origin/${name}`)
+  } catch (e) {
+    // NOOP
+  }
+}
 
 function main() {
 
@@ -32,6 +43,8 @@ function main() {
   execMTS(`git config --global user.email "you@example.com"`)
   execMTS(`git config --global user.name "Your Name"`)
 
+  failableMergeBranch(execMTS, "ts_4_1_b")
+
   step("Installing NPM");
   execMTS("npm i")
 
@@ -45,10 +58,6 @@ function main() {
 
   step("Updating the internal version of TS inside monaco");
   execMTS("npm run import-typescript");
-  
-  step("Adding Type Definitions and Source Map support");
-  execMTS(`json -I -f src/tsconfig.json -e "this.compilerOptions.declaration=true"`)
-  execMTS(`json -I -f src/tsconfig.json -e "this.compilerOptions.sourceMap=true"`)
 
   let version = args[1] 
   if (version) {
@@ -62,15 +71,17 @@ function main() {
   step("Setting the name");
   execMTS(`json -I -f package.json -e "this.name='@${user}/monaco-typescript'"`)
 
-  step("Publishing to NPM");
-  try {
-    // Support this command failing when pushing a dupe
-    execMTS(`npm publish --access public ${tagPrefix}`)
-  } catch (error) {
-    console.log(error.message)
-    
-    if (!error.message.includes("previously published versions")) {
-      throw error
+  if (!dontDeploy) {
+    step("Publishing to NPM");
+    try {
+      // Support this command failing when pushing a dupe
+      execMTS(`npm publish --access public ${tagPrefix}`)
+    } catch (error) {
+      console.log(error.message)
+      
+      if (!error.message.includes("previously published versions")) {
+        throw error
+      }
     }
   }
 }

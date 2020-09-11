@@ -12,6 +12,13 @@ const exec = (cmd, opts) => {
   }
 };
 
+// So, you can run this locally
+const dontDeploy = !!process.env.SKIP_DEPLOY
+const envUser = process.env.USER_ACCOUNT
+
+// For example: 
+//   USER_ACCOUNT="typescript-deploys" SKIP_DEPLOY="true" node ./publish-monaco-editor.js next
+
 const step = msg => console.log("\n\n - " + msg);
 
 function main() {
@@ -31,9 +38,7 @@ function main() {
 
   // step("Merging in open PRs we want");
 
-  const user = exec("npm whoami")
-    .toString()
-    .trim();
+  const user = envUser || exec("npm whoami").toString().trim();
 
   step("Renaming");
   execME(`json -I -f package.json -e "this.name='@${user}/monaco-editor'"`);
@@ -50,8 +55,10 @@ function main() {
   execME(`gulp release`);
 
   // Run the final command inside the release dir
-  step("Publishing");
-  execRelease(`npm publish --access public ${tagPrefix}`);
+  if (!dontDeploy) {
+    step("Publishing");
+    execRelease(`npm publish --access public ${tagPrefix}`);
+  }
 
   step("Done!");
 }
