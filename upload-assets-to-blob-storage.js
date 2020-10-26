@@ -55,8 +55,15 @@ function main() {
   exec(`json -I -f ${filename} -e "this.versions = Array.from(new Set([...this.versions, '${safeTypeScriptPackage}'])).sort()"`)
   exec(`az storage blob upload  -f ${filename} -c indexes -n ${filename}`)
 
-  writeFileSync("releases/next.json", JSON.stringify({ version: typescriptPackageJSON.version }))
-  exec(`az storage blob upload  -f "releases/next.json" -c indexes -n "next.json"`)
+  // Update the next.json to be the latest _known_ nightly build of TS
+  if (isPreRelease) {
+    const existingReleases = JSON.parse(readFileSync(filename, "utf8")).versions
+    const devReleases = existingReleases.filter(f => f.includes("-dev"))
+    const latest = devReleases.pop()
+    writeFileSync("releases/next.json", JSON.stringify({ version: latest }))
+    exec(`az storage blob upload  -f "releases/next.json" -c indexes -n "next.json"`)
+  }
+
 
   step("Done!");
 }
