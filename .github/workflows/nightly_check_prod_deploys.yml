@@ -24,7 +24,7 @@ jobs:
 
         # Replace remotes with auth'd versions, set up tags which are needed
         # then push those to trigger the building process in ./ship_tags.yml
-      - 
+      - name: "Run Script"
         run: |
           git remote remove origin
           git remote add origin https://$GITHUB_TOKEN@github.com/microsoft/TypeScript-Make-Monaco-Builds.git

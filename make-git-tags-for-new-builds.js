@@ -25,7 +25,10 @@ const go = async () => {
   const tags = await get("https://registry.npmjs.org/-/package/typescript/dist-tags")
   const needed = [tags.latest, tags.beta, tags.rc]
   const todo = needed.filter(tag => !all.includes(tag))
-  if (todo.length === 0) return
+  if (todo.length === 0) {
+    console.log("No new builds to create.")
+    return
+  }
 
   console.log("Creating tags for: " + todo.join(", "))
   todo.forEach(tag => {
