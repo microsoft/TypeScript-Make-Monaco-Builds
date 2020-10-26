@@ -67,7 +67,7 @@ Note that npm won't allow re-publishing the same version, so you better do it qu
 Are you here because of a failing build? Chances are your issue comes up from a `require` statement inside the TypeScript codebase. 
 The logs will let you know if this is the issue.
 
-This has happened a few times, you need to go to [microsoft/monaco-typescript](https://github.com/microsoft/monaco-typescript) and look at [`./scripts/importTypeScript.js`](https://github.com/microsoft/monaco-typescript/blob/master/scripts/importTypescript.js). Fix it there (I update the TS version in that repo, then fix the script, and send a PR for just that script change: e.g. [#72](https://github.com/microsoft/monaco-typescript/pull/72)) then come back to the file in this repo: [`./publish-monaco-ts.js`](https://github.com/orta/make-monaco-builds/blob/master/publish-monaco-ts.js) and add a step to merge in your new PR.
+This has happened a few times, you need to go to [microsoft/monaco-typescript](https://github.com/microsoft/monaco-typescript) and look at [`./scripts/importTypeScript.js`](https://github.com/microsoft/monaco-typescript/blob/master/scripts/importTypescript.js). Fix it there (I update the TS version in that repo, then fix the script, and send a PR for just that script change: e.g. [#72](https://github.com/microsoft/monaco-typescript/pull/72)) then come back to the file in this repo: [`./publish-monaco-ts.js`](https://github.com/orta/make-monaco-builds/blob/master/publish-monaco-ts.js) and add a step to merge in your new PR e.g. [#3](https://github.com/microsoft/TypeScript-Make-Monaco-Builds/pull/3).
 
 # Contributing
 
