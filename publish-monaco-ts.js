@@ -43,7 +43,7 @@ function main() {
   execMTS(`git config --global user.email "you@example.com"`)
   execMTS(`git config --global user.name "Your Name"`)
 
-  failableMergeBranch(execMTS, "ts_4_1_b")
+  failableMergeBranch(execMTS, "41_perf_require")
 
   step("Installing NPM");
   execMTS("npm i")
