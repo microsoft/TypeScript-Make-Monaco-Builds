@@ -1,0 +1,35 @@
+name: Create tags for prod deploys
+
+on:
+  schedule:
+    # Daily
+    # https://crontab.guru/#0_12_*_*_*
+    - cron: "0 12 * * *"
+  # Whenever someone asks
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+          registry-url: "https://registry.npmjs.org"
+
+        # Setup Git
+      - run: git config user.name "typescript-bot"
+      - run: git config user.email "bot@typescriptlang.org"
+
+        # Replace remotes with auth'd versions, set up tags which are needed
+        # then push those to trigger the building process in ./ship_tags.yml
+      - 
+        run: |
+          git remote remove origin
+          git remote add origin https://$GITHUB_TOKEN@github.com/microsoft/TypeScript-Make-Monaco-Builds.git
+          node make-git-tags-for-new-builds.js
+          git push origin --tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
+
