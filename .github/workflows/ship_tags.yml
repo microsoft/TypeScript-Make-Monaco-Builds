@@ -48,4 +48,4 @@ jobs:
           title: "Tagged Build failed for ${{ github.ref }}"
           summary: Failed to upload tag
           text: Failed to upload tag
-          actions: '[{ "@type": "OpenUri", "name": "View Logs", "targets": [{ "os": "default", "uri": "https://github.com/microsoft/TypeScript-Make-Monaco-Builds/actions/runs/${{ github.run_id }}?check_suite_focus=true" }] }]'
+          actions: '[{ "@type": "OpenUri", "name": "View Logs", "targets": [{ "os": "default", "uri": "https://github.com/microsoft/TypeScript-Make-Monaco-Builds/actions/runs/${{ github.run_id }}?check_suite_focus=true" }] }, { "@type": "OpenUri", "name": "Troubleshooting ", "targets": [{ "os": "default", "uri": "https://github.com/microsoft/TypeScript-Make-Monaco-Builds#troubleshooting" }] }]'
