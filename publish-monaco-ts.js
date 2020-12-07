@@ -22,6 +22,14 @@ const failableMergeBranch = (exec, name) => {
   }
 }
 
+const failableMergePR = (exec, number) => {
+  try {
+    exec(`git pull origin pull/${number}/head/`)
+  } catch (e) {
+    // NOOP
+  }
+}
+
 function main() {
 
   // TypeScript calls nightlies next... So should we.
@@ -44,6 +52,7 @@ function main() {
   execMTS(`git config --global user.name "Your Name"`)
 
   failableMergeBranch(execMTS, "41_perf_require")
+  failableMergePR(execMTS, 73) // Extra JSX options
 
   step("Installing NPM");
   execMTS("npm i")
