@@ -43,10 +43,11 @@ octokit.paginate(options).then(
     const messagesByTheBot = results.filter(issue => issue.user.id === 23042052).reverse();
     const messageWithTGZ = messagesByTheBot.find(m => m.body.includes("an installable tgz") && m.body.includes("packed"));
 
-    // If we find it and it's not sneakily been edit already
+    // If we find it and it's not sneakily been edited already
     if (messageWithTGZ && !messageWithTGZ.body.includes("playground")) {
       console.error(`Updating comment ${messageWithTGZ.id} on microsoft/TypeScript#${prNumber}`);
-      const newBody = `${messageWithTGZ.body}\n\n---\n\nThere is also a playground [for this build](https://www.staging-typescript.org/play?ts=${npmTag}).`;
+      const npmURL = `[npm](https://www.npmjs.com/package/@typescript-deploys/pr-build/v/${npmTag})`
+      const newBody = `${messageWithTGZ.body}\n\n---\n\nThere is also a playground [for this build](https://www.staging-typescript.org/play?ts=${npmTag}) and an ${npmURL} module you can use via \`"typescript": "npm:@typescript-deploys/pr-build@${npmTag}"\`.;`
 
       octokit.issues.updateComment({
         comment_id: messageWithTGZ.id,

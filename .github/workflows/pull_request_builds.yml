@@ -65,7 +65,6 @@ jobs:
           echo "Commenting back on the PR"
           node pulls/comment-on-release.js $PULL_REQUEST_NUMBER $SEMVER_NUMBER
 
-
       - name: Upload to Azure
         env:
           AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
