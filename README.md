@@ -70,6 +70,11 @@ The logs will let you know if this is the issue.
 
 This has happened a few times, you need to go to [microsoft/monaco-typescript](https://github.com/microsoft/monaco-typescript) and look at [`./scripts/importTypeScript.js`](https://github.com/microsoft/monaco-typescript/blob/master/scripts/importTypescript.js). Fix it there (I update the TS version in that repo, then fix the script, and send a PR for just that script change: e.g. [#72](https://github.com/microsoft/monaco-typescript/pull/72)) then come back to the file in this repo: [`./publish-monaco-ts.js`](https://github.com/orta/make-monaco-builds/blob/master/publish-monaco-ts.js) and add a step to merge in your new PR e.g. [#3](https://github.com/microsoft/TypeScript-Make-Monaco-Builds/pull/3).
 
+You can run the following commands to replicate the general behavior without side-effects:
+
+- `SKIP_DEPLOY=1 node ./publish-monaco-ts.js next`
+- `SKIP_DEPLOY=1 node ./publish-monaco-editor.js next`
+
 # Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a

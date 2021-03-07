@@ -51,8 +51,8 @@ function main() {
   execMTS(`git config --global user.email "you@example.com"`)
   execMTS(`git config --global user.name "Your Name"`)
 
-  failableMergeBranch(execMTS, "41_perf_require")
-  failableMergePR(execMTS, 73) // Extra JSX options
+  failableMergeBranch(execMTS, "4_3_dev") // 4.3 extra args in getCompletionEntryDetails
+  // failableMergePR(execMTS, 75) 
 
   step("Installing NPM");
   execMTS("npm i")
@@ -79,6 +79,9 @@ function main() {
   
   step("Setting the name");
   execMTS(`json -I -f package.json -e "this.name='@${user}/monaco-typescript'"`)
+
+  step("Running 'prePublishOnly' ahead of time for better error logs");
+  execMTS(`npm run prepublishOnly`);
 
   if (!dontDeploy) {
     step("Publishing to NPM");
