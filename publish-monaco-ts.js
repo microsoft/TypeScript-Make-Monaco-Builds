@@ -9,7 +9,14 @@ const dontDeploy = !!process.env.SKIP_DEPLOY
 
 const exec = (cmd, opts) => {
     console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);
-    return execSync(cmd, opts);
+    try {
+      return execSync(cmd, opts);
+    } catch (error) {
+      console.log("Command Failed:")
+      console.log("STDOUT:" + error.stdout.toString())
+      console.log("STDERR:" + error.stderr.toString())
+      throw error
+    }
 };
 
 const step = (msg) => console.log("\n\n - " + msg);

@@ -8,7 +8,10 @@ const exec = (cmd, opts) => {
   try {
     return execSync(cmd, opts);
   } catch (error) {
-    console.error(error.message);
+    console.log("Command Failed:")
+    console.log("STDOUT:" + error.stdout.toString())
+    console.log("STDERR:" + error.stderr.toString())
+    throw error
   }
 };
 
