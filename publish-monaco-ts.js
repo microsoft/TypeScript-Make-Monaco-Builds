@@ -55,8 +55,11 @@ function main() {
 
   const execMTS = (cmd) => exec(cmd, { cwd: "monaco-typescript" })
 
-  execMTS(`git config --global user.email "you@example.com"`)
-  execMTS(`git config --global user.name "Your Name"`)
+  const setEmail = execMTS(`git config --global user.email`).includes("@")
+  if (!setEmail) {
+    execMTS(`git config --global user.email "you@example.com"`)
+    execMTS(`git config --global user.name "Your Name"`)
+  }
 
   failableMergeBranch(execMTS, "4_3_dev") // 4.3 extra args in getCompletionEntryDetails
   // failableMergePR(execMTS, 75) 
