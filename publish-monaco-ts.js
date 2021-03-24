@@ -55,8 +55,12 @@ function main() {
 
   const execMTS = (cmd) => exec(cmd, { cwd: "monaco-typescript" })
 
-  const setEmail = execMTS(`git config --global user.email`).includes("@")
-  if (!setEmail) {
+  let hasGitCreds = false
+  try {
+    hasGitCreds = execMTS(`git config --global user.email`).includes("@")
+  } catch (error) {}
+  
+  if (!hasGitCreds) {
     execMTS(`git config --global user.email "you@example.com"`)
     execMTS(`git config --global user.name "Your Name"`)
   }
