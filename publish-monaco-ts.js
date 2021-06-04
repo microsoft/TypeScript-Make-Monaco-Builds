@@ -65,8 +65,7 @@ function main() {
     execMTS(`git config --global user.name "Your Name"`)
   }
 
-  failableMergeBranch(execMTS, "4_3_dev") // 4.3 extra args in getCompletionEntryDetails
-  // failableMergePR(execMTS, 75) 
+  failableMergeBranch(execMTS, "more_4_4") // 4.4 logic around undefined and missing values
 
   step("Installing NPM");
   execMTS("npm i")
