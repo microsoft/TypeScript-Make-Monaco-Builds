@@ -66,6 +66,7 @@ function main() {
   }
 
   failableMergeBranch(execMTS, "more_4_4") // 4.4 logic around undefined and missing values
+  failableMergePR(execMTS, 81)
 
   step("Installing NPM");
   execMTS("npm i")
