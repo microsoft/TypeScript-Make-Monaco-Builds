@@ -65,8 +65,8 @@ function main() {
     execMTS(`git config --global user.name "Your Name"`)
   }
 
-  failableMergeBranch(execMTS, "more_4_4") // 4.4 logic around undefined and missing values
-  failableMergePR(execMTS, 81)
+  // failableMergeBranch(execMTS, "more_4_4") // 4.4 logic around undefined and missing values
+  failableMergePR(execMTS, 84)
 
   step("Installing NPM");
   execMTS("npm i")
