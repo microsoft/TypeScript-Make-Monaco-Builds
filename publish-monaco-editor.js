@@ -16,6 +16,15 @@ const exec = (cmd, opts) => {
   }
 };
 
+const failableMergeBranch = (exec, name) => {
+  try {
+    exec(`git merge origin/${name}`)
+  } catch (e) {
+    // NOOP
+  }
+}
+
+
 // So, you can run this locally
 const dontDeploy = !!process.env.SKIP_DEPLOY
 const envUser = process.env.USER_ACCOUNT
@@ -42,6 +51,10 @@ function main() {
 
   if (existsSync("monaco-editor")) exec("rm -rf monaco-editor")
   exec("git clone https://github.com/microsoft/monaco-editor.git");
+
+  // Add typescript to the tsWorker export
+  // https://github.com/microsoft/monaco-editor/pull/2770
+  failableMergeBranch(exec, "expose_ts")
 
   const execME = cmd => exec(cmd, { cwd: "monaco-editor" });
   const execRelease = cmd => exec(cmd, { cwd: "monaco-editor/release" });
