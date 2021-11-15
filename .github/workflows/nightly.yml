@@ -25,11 +25,6 @@ jobs:
       # For Azure uploads
       - run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
-      - name: Setup Monaco TypeScript
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: node ./publish-monaco-ts.js next
-
       - name: Setup Monaco Editor
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

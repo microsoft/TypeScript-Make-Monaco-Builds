@@ -50,10 +50,8 @@ jobs:
 
           echo "Building TS Monaco $SEMVER_NUMBER"
 
-          node ./publish-monaco-ts.js $ZIP_FILE $SEMVER_NUMBER
-
           echo "Building Monaco Editor with the new TS Monaco"
-          node ./publish-monaco-editor.js $SEMVER_NUMBER
+          node ./publish-monaco-editor.js $SEMVER_NUMBER @typescript-deploys/pr-build
 
           echo ""
           echo ""

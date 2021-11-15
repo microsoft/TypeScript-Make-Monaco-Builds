@@ -1,6 +1,7 @@
 // @ts-check
 
 const { execSync } = require("child_process");
+const { existsSync } = require("fs");
 const args = process.argv.slice(2);
 
 const exec = (cmd, opts) => {
@@ -25,6 +26,10 @@ const envUser = process.env.USER_ACCOUNT
 const step = msg => console.log("\n\n - " + msg);
 
 function main() {
+    // TypeScript calls nightlies next... So should we.
+  const typescriptTag = args[0] ? args[0] : "next"
+  const typescriptModuleName = args[1] ? args[1] : "typescript"
+
   const monacoTypescriptTag = args[0];
   const isPushedTag = process.env.GITHUB_EVENT_NAME === "push";
   const tagPrefix = isPushedTag || args[0].includes("http") || args[0].includes("-pr-") ? "" : `--tag ${monacoTypescriptTag}`;
@@ -34,6 +39,8 @@ function main() {
 
   // Create a tarball of the current version
   step("Cloning the repo");
+
+  if (existsSync("monaco-editor")) exec("rm -rf monaco-editor")
   exec("git clone https://github.com/microsoft/monaco-editor.git");
 
   const execME = cmd => exec(cmd, { cwd: "monaco-editor" });
@@ -46,16 +53,34 @@ function main() {
   step("Renaming");
   execME(`json -I -f package.json -e "this.name='@${user}/monaco-editor'"`);
 
-  step("Overwriting the Monaco TypeScript with our new build + grabbing deps");
-  execME(`yarn add --dev "monaco-typescript@npm:@${user}/monaco-typescript@${monacoTypescriptTag}"`);
+  step("Removing TypeDoc because its ships its own version of TypeScript and npm complains");
+  execME(`npm remove typedoc`)
+
+  step("Overwriting the version of TypeScript");
+  if (typescriptModuleName === "typescript") {
+    execME(`npm install --save "typescript@${typescriptTag}" --force`)
+  } else {
+    execME(`npm install --save "typescript@npm:${typescriptModuleName}@${typescriptTag}" --force`)
+
+  }
+
+  step("Re-running");
+  execME(`npm install --save "typescript@${typescriptTag}" --force`)
+
 
   step("Matching the versions");
   
-  const monacoTypeScriptVersion = execME("json -f node_modules/monaco-typescript/package.json version").toString().trim();
-  execME(`json -I -f package.json -e "this.version='${monacoTypeScriptVersion}'"`);
+  const typeScriptVersion = execME("json -f node_modules/typescript/package.json version").toString().trim();
+  execME(`json -I -f package.json -e "this.version='${typeScriptVersion}'"`);
 
   step("Creating release folder");
-  execME(`gulp release`);
+  execME(`npm run release`);
+
+  step("Updating TS in monaco-typescript");
+  execME(`npm run import-typescript`);
+
+  step("Re-running release");
+  execME(`npm run release`);
 
   // Run the final command inside the release dir
   if (!dontDeploy) {
