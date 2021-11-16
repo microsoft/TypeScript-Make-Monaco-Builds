@@ -98,7 +98,7 @@ function main() {
   // Run the final command inside the release dir
   if (!dontDeploy) {
     step("Publishing");
-    // execRelease(`npm publish --access public ${tagPrefix}`);
+    execRelease(`npm publish --access public ${tagPrefix}`);
   }
 
   step("Done!");
