@@ -74,12 +74,7 @@ function main() {
     execME(`npm install --save "typescript@${typescriptTag}" --force`)
   } else {
     execME(`npm install --save "typescript@npm:${typescriptModuleName}@${typescriptTag}" --force`)
-
   }
-
-  step("Re-running");
-  execME(`npm install --save "typescript@${typescriptTag}" --force`)
-
 
   step("Matching the versions");
   
