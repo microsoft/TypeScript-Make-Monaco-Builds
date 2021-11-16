@@ -56,8 +56,8 @@ function main() {
   exec("git clone https://github.com/microsoft/monaco-editor.git");
 
   // Add typescript to the tsWorker export
-  // https://github.com/microsoft/monaco-editor/pull/2770
-  failableMergeBranch(execME, "expose_ts")
+  // https://github.com/microsoft/monaco-editor/pull/2775
+  failableMergeBranch(execME, "ts_faff")
 
   // step("Merging in open PRs we want");
 
