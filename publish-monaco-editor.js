@@ -59,6 +59,7 @@ function main() {
   // https://github.com/microsoft/monaco-editor/pull/2775
   step("Merging in open PRs we want");
   failableMergeBranch(execME, "ts_faff")
+  execME("git rev-parse HEAD")
 
   const user = envUser || exec("npm whoami").toString().trim();
 
