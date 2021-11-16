@@ -46,6 +46,9 @@ function main() {
   console.log("## Creating build of Monaco Editor");
   process.stdout.write("> node publish-monaco-editor.js");
 
+  const execME = cmd => exec(cmd, { cwd: "monaco-editor" });
+  const execRelease = cmd => exec(cmd, { cwd: "monaco-editor/release" });
+
   // Create a tarball of the current version
   step("Cloning the repo");
 
@@ -54,10 +57,7 @@ function main() {
 
   // Add typescript to the tsWorker export
   // https://github.com/microsoft/monaco-editor/pull/2770
-  failableMergeBranch(exec, "expose_ts")
-
-  const execME = cmd => exec(cmd, { cwd: "monaco-editor" });
-  const execRelease = cmd => exec(cmd, { cwd: "monaco-editor/release" });
+  failableMergeBranch(execME, "expose_ts")
 
   // step("Merging in open PRs we want");
 
@@ -98,7 +98,7 @@ function main() {
   // Run the final command inside the release dir
   if (!dontDeploy) {
     step("Publishing");
-    execRelease(`npm publish --access public ${tagPrefix}`);
+    // execRelease(`npm publish --access public ${tagPrefix}`);
   }
 
   step("Done!");
