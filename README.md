@@ -1,11 +1,15 @@
 # Monaco Daily Builds
 
 
-Uses [GitHub Actions](.github/workflows) to deploy builds of both [monaco-typescript](https://github.com/Microsoft/monaco-typescript) and [monaco-editor](https://github.com/Microsoft/monaco-editor) using TypeScript nightly builds.
+Uses [GitHub Actions](.github/workflows) to deploy builds of [monaco-editor](https://github.com/Microsoft/monaco-editor) using TypeScript releases, nightlies or PR builds.
 
 These live inside typescript-deploys account on npm, credentials are in the JSTS Azure Keyvault.
 
-See the module releases ([monaco-typescript](https://www.npmjs.com/package/@typescript-deploys/monaco-typescript), [monaco-editor](https://www.npmjs.com/package/@typescript-deploys/monaco-editor) - click 'versions'), [GitHub releases](https://github.com/orta/make-monaco-builds/releases) & [daily script](.github/workflows/main.yml).
+See the module releases ([monaco-editor](https://www.npmjs.com/package/@typescript-deploys/monaco-editor) - click 'versions'), [GitHub releases](https://github.com/microsoft/typescript-make-monaco-builds/releases) & [daily script](.github/workflows/main.yml).
+
+### Nightlies
+
+The Playground will access [https://typescript.azureedge.net/indexes/releases/next.json](https://typescript.azureedge.net/indexes/releases/next.json) to see what the latest version is of Monaco for TypeScript is.
 
 ### Pull Request Builds
 
@@ -32,7 +36,9 @@ from ts-bot which includes a static build of a pull request.
 ### Tag Builds
 
 When you want to trigger a build for a /specific/ build of TypeScript, you can ship a tag to this
-repo with the same version which is available on the TypeScript npm module.
+repo with the same version which is available on the TypeScript npm module. 
+
+Chance are that you dont need to do this because the [`nightly_check_prod_deploys.yml`](.github/workflows/nightly_check_prod_deploys.yml) will sync the tags with TypeScript every night.
 
 ### CDN'd
 
@@ -68,11 +74,10 @@ Note that npm won't allow re-publishing the same version, so you better do it qu
 Are you here because of a failing build? Chances are your issue comes up from a `require` statement inside the TypeScript codebase. 
 The logs will let you know if this is the issue.
 
-This has happened a few times, you need to go to [microsoft/monaco-typescript](https://github.com/microsoft/monaco-typescript) and look at [`./scripts/importTypeScript.js`](https://github.com/microsoft/monaco-typescript/blob/master/scripts/importTypescript.js). Fix it there (I update the TS version in that repo, then fix the script, and send a PR for just that script change: e.g. [#72](https://github.com/microsoft/monaco-typescript/pull/72)) then come back to the file in this repo: [`./publish-monaco-ts.js`](https://github.com/orta/make-monaco-builds/blob/master/publish-monaco-ts.js) and add a step to merge in your new PR e.g. [#3](https://github.com/microsoft/TypeScript-Make-Monaco-Builds/pull/3).
+This has happened a few times, you need to go to [microsoft/monaco-editor](https://github.com/microsoft/monaco-editor) and look at [`./build/importTypeScript.js`](https://github.com/microsoft/monaco-editor/blob/main/build/importTypescript.js). Fix it there (I update the TS version in that repo, then fix the script, and send a PR for just that script change: e.g. [#72](https://github.com/microsoft/monaco-typescript/pull/72)) then come back to the file in this repo: [`./publish-monaco-ts.js`](https://github.com/microsoft/typescript-make-monaco-builds/blob/master/publish-monaco-ts.js) and add a step to merge in your new PR e.g. [#3](https://github.com/microsoft/TypeScript-Make-Monaco-Builds/pull/3).
 
 You can run the following commands to replicate the general behavior without side-effects:
 
-- `SKIP_DEPLOY=1 node ./publish-monaco-ts.js next`
 - `SKIP_DEPLOY=1 node ./publish-monaco-editor.js next`
 
 # Contributing
