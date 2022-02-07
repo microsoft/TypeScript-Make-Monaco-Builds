@@ -55,11 +55,8 @@ function main() {
   if (existsSync("monaco-editor")) exec("rm -rf monaco-editor")
   exec("git clone https://github.com/microsoft/monaco-editor.git");
 
-  // Add typescript to the tsWorker export
-  // https://github.com/microsoft/monaco-editor/pull/2775
-  step("Merging in open PRs we want");
-  failableMergeBranch(execME, "ts_faff")
-  execME("git rev-parse HEAD")
+  step("Using older build of monaco-editor");
+  execME("git checkout 9fac3918b2516fc983d771623c2cc578f1fd2658")
 
   const user = envUser || exec("npm whoami").toString().trim();
 
