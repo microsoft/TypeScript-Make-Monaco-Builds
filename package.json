@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@types/node": "^16.11.7",
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^2.6.7",
     "@actions/github": "^1.1.0"
   }
 }
