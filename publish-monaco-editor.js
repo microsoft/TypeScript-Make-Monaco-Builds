@@ -58,7 +58,7 @@ function main() {
   // Add typescript to the tsWorker export
   // https://github.com/microsoft/monaco-editor/pull/2775
   step("Merging in open PRs we want");
-  execME("git remote add andrewbranch git@github.com:andrewbranch/monaco-editor.git")
+  execME("git remote add andrewbranch https://github.com/andrewbranch/monaco-editor.git")
   execME("git fetch andrewbranch")
   failableMergeBranch(execME, "andrewbranch/update-ts")
   execME("git rev-parse HEAD")
