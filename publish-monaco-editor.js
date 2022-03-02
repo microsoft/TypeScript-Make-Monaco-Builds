@@ -18,7 +18,7 @@ const exec = (cmd, opts) => {
 
 const failableMergeBranch = (exec, name) => {
   try {
-    exec(`git merge origin/${name}`)
+    exec(`git merge ${name}`)
   } catch (e) {
     // NOOP
   }
@@ -58,7 +58,9 @@ function main() {
   // Add typescript to the tsWorker export
   // https://github.com/microsoft/monaco-editor/pull/2775
   step("Merging in open PRs we want");
-  failableMergeBranch(execME, "ts_faff")
+  execME("git remote add andrewbranch git@github.com:andrewbranch/monaco-editor.git")
+  execME("git fetch andrewbranch")
+  failableMergeBranch(execME, "andrewbranch/update-ts")
   execME("git rev-parse HEAD")
 
   const user = envUser || exec("npm whoami").toString().trim();
