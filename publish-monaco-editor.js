@@ -53,6 +53,8 @@ function main() {
   step("Cloning the repo");
 
   if (existsSync("monaco-editor")) exec("rm -rf monaco-editor")
+  exec("git config --global user.email 'typescriptbot@microsoft.com'")
+  exec("git config --global user.name 'TypeScript Bot'")
   exec("git clone https://github.com/microsoft/monaco-editor.git");
 
   // Add typescript to the tsWorker export
