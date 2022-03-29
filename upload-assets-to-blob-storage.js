@@ -37,7 +37,8 @@ function main() {
     exec(`cp -r monaco-editor/node_modules/typescript releases/${optionalTag}/typescript`);
   }
 
-  exec(`az storage blob upload-batch -s releases/ -d cdn`);
+  exec(`az storage blob upload-batch -s releases/ -d cdn --overwrite --dryrun`);
+  throw new Error("Testing")
 
   step("Updating an index");
   //  Make sure we have some kind of index
