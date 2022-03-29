@@ -21,7 +21,7 @@ module.exports = exec;
 function baseExec(cmd, opts, failMode) {
   console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);
   try {
-    return execSync(cmd, opts);
+    return execSync(cmd, { stdio: "inherit", ...opts });
   } catch (error) {
     if (failMode === FailMode.Fatal) {
       throw error;
