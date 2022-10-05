@@ -69,6 +69,7 @@ function main() {
   execME("git remote add jakebailey https://github.com/jakebailey/monaco-editor.git")
   execME("git fetch jakebailey")
   failableMergeBranch(execME, "jakebailey/ignore-typescript-services")
+  failableMergeBranch(execME, "jakebailey/support-module-transform")
 
   execME("git rev-parse HEAD")
 
