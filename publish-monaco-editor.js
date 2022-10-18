@@ -64,13 +64,6 @@ function main() {
   execME("git fetch andrewbranch")
   failableMergeBranch(execME, "andrewbranch/update-ts")
 
-  // Use typescript.js instead of typescriptServices.js
-  // https://github.com/microsoft/monaco-editor/pull/3344
-  execME("git remote add jakebailey https://github.com/jakebailey/monaco-editor.git")
-  execME("git fetch jakebailey")
-  failableMergeBranch(execME, "jakebailey/ignore-typescript-services")
-  failableMergeBranch(execME, "jakebailey/redo-require-removal")
-
   execME("git rev-parse HEAD")
 
   const user = envUser || exec("npm whoami").toString().trim();
