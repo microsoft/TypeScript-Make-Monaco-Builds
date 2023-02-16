@@ -74,6 +74,9 @@ function main() {
   step("Removing TypeDoc because its ships its own version of TypeScript and npm complains");
   execME(`npm remove typedoc`)
 
+  step("Updating @types/node to ensure we compile on newer versions of TypeScript");
+  execME(`npm update @types/node`);
+
   step("Overwriting the version of TypeScript");
   if (typescriptModuleName === "typescript") {
     execME(`npm install --save "typescript@${typescriptTag}" --force`)
@@ -85,9 +88,6 @@ function main() {
   
   const typeScriptVersion = execME("json -f node_modules/typescript/package.json version").toString().trim();
   execME(`json -I -f package.json -e "this.version='${typeScriptVersion}'"`);
-
-  step("Updating @types/node to ensure we compile on newer versions of TypeScript");
-  execME(`npm update @types/node`);
 
   step("Creating release folder");
   execME(`npm run release`);
