@@ -47,7 +47,7 @@ function main() {
   process.stdout.write("> node publish-monaco-editor.js");
 
   const execME = cmd => exec(cmd, { cwd: "monaco-editor" });
-  const execRelease = cmd => exec(cmd, { cwd: "monaco-editor/release" });
+  const execRelease = cmd => exec(cmd, { cwd: "monaco-editor/out/release" });
 
   // Create a tarball of the current version
   step("Cloning the repo");
@@ -90,13 +90,13 @@ function main() {
   execME(`json -I -f package.json -e "this.version='${typeScriptVersion}'"`);
 
   step("Creating release folder");
-  execME(`npm run release`);
+  execME(`npm run build-monaco-editor`);
 
   step("Updating TS in monaco-typescript");
   execME(`npm run import-typescript`);
 
   step("Re-running release");
-  execME(`npm run release`);
+  execME(`npm run build-monaco-editor`);
 
   // Run the final command inside the release dir
   if (!dontDeploy) {
