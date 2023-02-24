@@ -22,13 +22,13 @@ function main() {
   exec("rm -rf releases");
   exec("mkdir releases");
   exec(`mkdir releases/${safeTypeScriptPackage}`);
-  exec(`cp -r monaco-editor/release releases/${safeTypeScriptPackage}/monaco/`);
+  exec(`cp -r monaco-editor/out/release releases/${safeTypeScriptPackage}/monaco/`);
 
   // This is basically for nightlies, but if a 2nd arg is passed then we include a duped copy of the 
   // monaco-editor and monaco-typescript with the tag which was passed as an arg to the script
   if (optionalTag) {
     exec(`mkdir releases/${optionalTag}`);
-    exec(`cp -r monaco-editor/release releases/${optionalTag}/monaco/`);
+    exec(`cp -r monaco-editor/out/release releases/${optionalTag}/monaco/`);
   }
 
   step("Uploading TypeScript");
