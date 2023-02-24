@@ -47,7 +47,7 @@ function main() {
   process.stdout.write("> node publish-monaco-editor.js");
 
   const execME = cmd => exec(cmd, { cwd: "monaco-editor" });
-  const execRelease = cmd => exec(cmd, { cwd: "monaco-editor/release" });
+  const execRelease = cmd => exec(cmd, { cwd: "monaco-editor/out/release" });
 
   // Create a tarball of the current version
   step("Cloning the repo");
