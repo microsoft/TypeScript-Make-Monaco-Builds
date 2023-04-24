@@ -15,8 +15,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: "16.x"
           registry-url: "https://registry.npmjs.org"
@@ -69,12 +69,12 @@ jobs:
           AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
         run: node ./upload-assets-to-blob-storage.js
 
-      - name: Send a message to Microsoft Teams
-        if: ${{ failure() }}
-        uses: aliencube/microsoft-teams-actions@v0.8.0
-        with:
-          webhook_uri: ${{ secrets.TEAMS_WEB_BOT_INCOMING_URL }}
-          title: "PR Playground Build failed for ${{ github.event.action }}"
-          summary: Could not build the site for production
-          text: Could not build the site for production
-          actions: '[{ "@type": "OpenUri", "name": "View Logs", "targets": [{ "os": "default", "uri": "https://github.com/microsoft/TypeScript-Make-Monaco-Builds/actions/runs/${{ github.run_id }}?check_suite_focus=true" }, { "@type": "OpenUri", "name": "Troubleshooting ", "targets": [{ "os": "default", "uri": "https://github.com/microsoft/TypeScript-Make-Monaco-Builds#troubleshooting" }] }] }]'
+      # - name: Send a message to Microsoft Teams
+      #   if: ${{ failure() }}
+      #   uses: aliencube/microsoft-teams-actions@v0.8.0
+      #   with:
+      #     webhook_uri: ${{ secrets.TEAMS_WEB_BOT_INCOMING_URL }}
+      #     title: "PR Playground Build failed for ${{ github.event.action }}"
+      #     summary: Could not build the site for production
+      #     text: Could not build the site for production
+      #     actions: '[{ "@type": "OpenUri", "name": "View Logs", "targets": [{ "os": "default", "uri": "https://github.com/microsoft/TypeScript-Make-Monaco-Builds/actions/runs/${{ github.run_id }}?check_suite_focus=true" }, { "@type": "OpenUri", "name": "Troubleshooting ", "targets": [{ "os": "default", "uri": "https://github.com/microsoft/TypeScript-Make-Monaco-Builds#troubleshooting" }] }] }]'
