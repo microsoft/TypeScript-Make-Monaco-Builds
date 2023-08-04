@@ -68,6 +68,7 @@ function main() {
   execME("git remote add jakebailey https://github.com/jakebailey/monaco-editor.git")
   execME("git fetch jakebailey")
   failableMergeBranch(execME, "jakebailey/fix-inlay-hint-interface")
+  failableMergeBranch(execME, "jakebailey/revert-change-to-test")
 
   execME("git rev-parse HEAD")
 
