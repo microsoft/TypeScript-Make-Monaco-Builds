@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # We need the full history to check for preexisting tags
       - uses: actions/setup-node@v3
         with:
           node-version: "16.x"
