@@ -60,7 +60,7 @@ function main() {
   // Something broke when monaco-editor bumped its dep on monaco-editor-core to 0.41.
   // For now, hold it back until we can figure out what happened.
   // TODO(jakebailey): FIXME
-  execME("git switch --detach 50a8a5ffbfb581090dcb48073cd63af288ee26ab");
+  // execME("git switch --detach 50a8a5ffbfb581090dcb48073cd63af288ee26ab");
 
   // Add typescript to the tsWorker export
   // https://github.com/microsoft/monaco-editor/pull/2775
