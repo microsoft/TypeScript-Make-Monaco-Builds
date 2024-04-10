@@ -39,4 +39,6 @@ jobs:
         run: "node ./publish-monaco-editor.js $(echo $FULL_TAG_REF | cut -d/ -f3)"
 
       - name: Upload to Azure
+        env:
+          AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
         run: node ./upload-assets-to-blob-storage.js
