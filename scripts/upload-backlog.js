@@ -77,8 +77,6 @@ async function main() {
 
   step("Uploading folders to CDN")
   
-  // AZURE_STORAGE_ACCOUNT and AZURE_STORAGE_KEY need to be set up
-  // They are here: https://ms.portal.azure.com/#@microsoft.onmicrosoft.com/resource/subscriptions/57bfeeed-c34a-4ffd-a06b-ccff27ac91b8/resourceGroups/Playground-Static-Hosting/providers/Microsoft.Storage/storageAccounts/tswebinfra/keys
 
   exec(`az storage blob upload-batch -s releases/ -d cdn`)
   
