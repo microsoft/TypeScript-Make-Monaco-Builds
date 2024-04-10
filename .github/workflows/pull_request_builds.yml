@@ -1,5 +1,6 @@
 name: Build a version of TypeScript on request
-on: repository_dispatch
+on:
+  repository_dispatch:
 
 # This workflow is triggered from an API call where XXX is your token
 # and YYY is the PR that it should look at.
@@ -11,9 +12,14 @@ on: repository_dispatch
 #   -H "Authorization: token XXX" \
 #   --data-binary '{ "event_type": "YYY" }'
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: blob-storage
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -25,7 +31,12 @@ jobs:
       - run: "npm install -g json"
 
       # For Azure uploads
-      - run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Publish PR Build
         env:
@@ -66,15 +77,4 @@ jobs:
       - name: Upload to Azure
         env:
           AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
-          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}
         run: node ./upload-assets-to-blob-storage.js
-
-      # - name: Send a message to Microsoft Teams
-      #   if: ${{ failure() }}
-      #   uses: aliencube/microsoft-teams-actions@v0.8.0
-      #   with:
-      #     webhook_uri: ${{ secrets.TEAMS_WEB_BOT_INCOMING_URL }}
-      #     title: "PR Playground Build failed for ${{ github.event.action }}"
-      #     summary: Could not build the site for production
-      #     text: Could not build the site for production
-      #     actions: '[{ "@type": "OpenUri", "name": "View Logs", "targets": [{ "os": "default", "uri": "https://github.com/microsoft/TypeScript-Make-Monaco-Builds/actions/runs/${{ github.run_id }}?check_suite_focus=true" }, { "@type": "OpenUri", "name": "Troubleshooting ", "targets": [{ "os": "default", "uri": "https://github.com/microsoft/TypeScript-Make-Monaco-Builds#troubleshooting" }] }] }]'
