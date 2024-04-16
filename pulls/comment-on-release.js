@@ -47,7 +47,7 @@ octokit.paginate(options).then(
     if (messageWithTGZ && !messageWithTGZ.body.includes("playground")) {
       console.error(`Updating comment ${messageWithTGZ.id} on microsoft/TypeScript#${prNumber}`);
       const npmURL = `[npm](https://www.npmjs.com/package/@typescript-deploys/pr-build/v/${npmTag})`
-      const newBody = `${messageWithTGZ.body}\n\n---\n\nThere is also a playground [for this build](https://www.staging-typescript.org/play?ts=${npmTag}) and an ${npmURL} module you can use via \`"typescript": "npm:@typescript-deploys/pr-build@${npmTag}"\`.;`
+      const newBody = `${messageWithTGZ.body}\n\n---\n\nThere is also a playground [for this build](https://www.typescriptlang.org/play?ts=${npmTag}) and an ${npmURL} module you can use via \`"typescript": "npm:@typescript-deploys/pr-build@${npmTag}"\`.;`
 
       octokit.issues.updateComment({
         comment_id: messageWithTGZ.id,
