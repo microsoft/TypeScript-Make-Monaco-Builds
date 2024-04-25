@@ -68,6 +68,7 @@ function main() {
   execME("git remote add jakebailey https://github.com/jakebailey/monaco-editor.git")
   execME("git fetch jakebailey")
   failableMergeBranch(execME, "jakebailey/fix-compile-regex-parse")
+  failableMergeBranch(execME, "jakebailey/emit-file-diagnostics")
 
   execME("git rev-parse HEAD")
 
