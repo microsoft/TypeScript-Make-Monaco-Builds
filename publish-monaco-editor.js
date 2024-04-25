@@ -69,6 +69,7 @@ function main() {
   execME("git fetch jakebailey")
   failableMergeBranch(execME, "jakebailey/fix-compile-regex-parse")
   failableMergeBranch(execME, "jakebailey/emit-file-diagnostics")
+  failableMergeBranch(execME, "jakebailey/force-dts-emit")
 
   execME("git rev-parse HEAD")
 
