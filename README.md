@@ -9,7 +9,7 @@ See the module releases ([monaco-editor](https://www.npmjs.com/package/@typescri
 
 ### Nightlies
 
-The Playground will access [https://typescript.azureedge.net/indexes/releases/next.json](https://typescript.azureedge.net/indexes/releases/next.json) to see what the latest version is of Monaco for TypeScript is.
+The Playground will access [https://playgroundcdn.typescriptlang.org/indexes/releases/next.json](https://playgroundcdn.typescriptlang.org/indexes/releases/next.json) to see what the latest version is of Monaco for TypeScript is.
 
 ### Pull Request Builds
 
@@ -50,14 +50,14 @@ Every release has a corresponding upload to [azure blob storage](https://ms.port
 There are two indexes of all uploaded TypeScript and Monaco-Editor versions. It's important to note that Monaco Editor
 is indexed by the version of TypeScript it supports - not the version of the monaco-editor package.
 
-- Releases: [`https://typescript.azureedge.net/indexes/releases.json`](https://typescript.azureedge.net/indexes/releases.json)
-- Pre-Releases: [`https://typescript.azureedge.net/indexes/pre-releases.json`](https://typescript.azureedge.net/indexes/pre-releases.json)
-- Next: (provides a redirect to the latest nightly version) <br/>[`https://typescript.azureedge.net/indexes/next.json`](https://typescript.azureedge.net/indexes/next.json)
+- Releases: [`https://playgroundcdn.typescriptlang.org/indexes/releases.json`](https://playgroundcdn.typescriptlang.org/indexes/releases.json)
+- Pre-Releases: [`https://playgroundcdn.typescriptlang.org/indexes/pre-releases.json`](https://playgroundcdn.typescriptlang.org/indexes/pre-releases.json)
+- Next: (provides a redirect to the latest nightly version) <br/>[`https://playgroundcdn.typescriptlang.org/indexes/next.json`](https://playgroundcdn.typescriptlang.org/indexes/next.json)
 
 You can use the values from the two indexes to make links like:
 
-- https://typescript.azureedge.net/cdn/3.7.4/monaco/package.json
-- https://typescript.azureedge.net/cdn/3.7.4/typescript/package.json
+- https://playgroundcdn.typescriptlang.org/cdn/3.7.4/monaco/package.json
+- https://playgroundcdn.typescriptlang.org/cdn/3.7.4/typescript/package.json
 
 ---
 
