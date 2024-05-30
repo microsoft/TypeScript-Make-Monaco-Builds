@@ -37,16 +37,19 @@ function main() {
     exec(`cp -r monaco-editor/node_modules/typescript releases/${optionalTag}/typescript`);
   }
 
-  exec(`az storage blob upload-batch --auth-mode login -s releases/ -d cdn --overwrite`);
+  exec(`az storage blob upload-batch --auth-mode login --source releases/ --destination cdn --overwrite`);
+  exec(`az storage blob upload-batch --auth-mode login --source releases/ --destination '$web' --destination-path cdn/ --overwrite`);
 
   step("Updating an index");
   //  Make sure we have some kind of index
   const isPreRelease = safeTypeScriptPackage.includes("-");
   const filename = isPreRelease ? "pre-releases.json" : "releases.json";
 
-  exec(`az storage blob download --auth-mode login -c indexes -n ${filename} -f ${filename}`);
+  exec(`az storage blob download --auth-mode login --container-name indexes --name ${filename} --file ${filename}`);
+  // exec(`az storage blob download --auth-mode login --container-name '$web' --name indexes/${filename} --file ${filename}`);
   exec(`json -I -f ${filename} -e "this.versions = Array.from(new Set([...this.versions, '${safeTypeScriptPackage}'])).sort()"`);
-  exec.continueOnError(`az storage blob upload --auth-mode login -f ${filename} -c indexes -n ${filename} --overwrite`);
+  exec.continueOnError(`az storage blob upload --auth-mode login --file ${filename} --container-name indexes --name ${filename} --overwrite`);
+  exec.continueOnError(`az storage blob upload --auth-mode login --file ${filename} --container-name '$web' --name indexes/${filename} --overwrite`);
 
   // Update the next.json to be the latest _known_ nightly build of TS
   if (isPreRelease) {
@@ -54,7 +57,8 @@ function main() {
     const devReleases = existingReleases.filter(f => f.includes("-dev"));
     const latest = devReleases.pop();
     writeFileSync("releases/next.json", JSON.stringify({ version: latest }));
-    exec.continueOnError(`az storage blob upload --auth-mode login -f "releases/next.json" -c indexes -n "next.json" --overwrite`);
+    exec.continueOnError(`az storage blob upload --auth-mode login --file "releases/next.json" --container-name indexes --name "next.json" --overwrite`);
+    exec.continueOnError(`az storage blob upload --auth-mode login --file "releases/next.json" --container-name '$web' --name "indexes/next.json" --overwrite`);
   }
 
 

@@ -78,7 +78,8 @@ async function main() {
   step("Uploading folders to CDN")
   
 
-  exec(`az storage blob upload-batch -s releases/ -d cdn`)
+  exec(`az storage blob upload-batch --source releases/ --destination cdn`)
+  exec(`az storage blob upload-batch --source releases/ --destination '$web' --destination-path cdn/`)
   
   step("Done!");
 }
