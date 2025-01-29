@@ -10,10 +10,10 @@ if (!process.argv[2]) {
 
 const prNumber = process.argv[2];
 const github = require("@actions/github");
-const octokit = new github.GitHub(process.env.GITHUB_TOKEN);
+const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
 
 console.error(`Getting microsoft/TypeScript#${prNumber}`);
-const options = octokit.issues.listComments.endpoint.merge({
+const options = octokit.rest.issues.listComments.endpoint.merge({
   owner: "microsoft",
   repo: "TypeScript",
   issue_number: prNumber

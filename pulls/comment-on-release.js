@@ -4,6 +4,10 @@ if (!process.env.GITHUB_TOKEN) {
   throw new Error("No GITHUB_TOKEN specified");
 }
 
+if (!process.env.BOT_GITHUB_TOKEN) {
+  throw new Error("No BOT_GITHUB_TOKEN specified");
+}
+
 if (!process.argv[2]) {
   throw new Error("No Pull Request number specified");
 }
@@ -16,21 +20,13 @@ const prNumber = process.argv[2];
 const npmTag = process.argv[3];
 
 const github = require("@actions/github");
-const octokit = new github.GitHub(process.env.BOT_GITHUB_TOKEN);
+const octokit = github.getOctokit(process.env.BOT_GITHUB_TOKEN);
 
 // @ts-check
 
 // Prints a semver version for the PR sandbox
 
-if (!process.env.BOT_GITHUB_TOKEN) {
-  throw new Error("No BOT_GITHUB_TOKEN specified");
-}
-
-if (!process.argv[2]) {
-  throw new Error("No Pull Request number specified");
-}
-
-const options = octokit.issues.listComments.endpoint.merge({
+const options = octokit.rest.issues.listComments.endpoint.merge({
   owner: "microsoft",
   repo: "TypeScript",
   issue_number: prNumber
@@ -49,7 +45,7 @@ octokit.paginate(options).then(
       const npmURL = `[npm](https://www.npmjs.com/package/@typescript-deploys/pr-build/v/${npmTag})`
       const newBody = `${messageWithTGZ.body}\n\n---\n\nThere is also a playground [for this build](https://www.typescriptlang.org/play?ts=${npmTag}) and an ${npmURL} module you can use via \`"typescript": "npm:@typescript-deploys/pr-build@${npmTag}"\`.;`
 
-      octokit.issues.updateComment({
+      octokit.rest.issues.updateComment({
         comment_id: messageWithTGZ.id,
         body: newBody,
         owner: "microsoft",

@@ -27,11 +27,15 @@ const step = (msg) => console.log("\n\n - " + msg);
 const downloadFile = (async (url, path) => {
   const res = await nodeFetch(url);
   const fileStream = createWriteStream(path);
-  await new Promise((resolve, reject) => {
+  /**
+   * @type {Promise<void>}
+   */
+  const p = new Promise((resolve, reject) => {
       res.body.pipe(fileStream);
       res.body.on("error", reject);
       fileStream.on("finish", resolve);
     });
+  await p;
 });
 
 // const zip = "https://typescript.visualstudio.com/cf7ac146-d525-443c-b23c-0d58337efebc/_apis/build/builds/90574/artifacts?artifactName=tgz&fileId=B6CF677A3E6A1E64595A97B37265249A6F00DED8731339D3EF5314A6F40C6E3E02&fileName=/typescript-4.2.0-insiders.20201207.tgz"
