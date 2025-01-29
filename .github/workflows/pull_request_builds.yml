@@ -24,10 +24,10 @@ jobs:
       - "1ES.ImageOverride=mariner-2.0"
     environment: blob-storage
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
-          node-version: "16.x"
+          node-version: "22.x"
           registry-url: "https://registry.npmjs.org"
 
       # Lets us use one-liner JSON manipulations on package.jsons
@@ -41,7 +41,7 @@ jobs:
           BOT_GITHUB_TOKEN: ${{ secrets.BOT_GITHUB_TOKEN }}
 
         run: |
-          yarn install
+          npm ci
 
           PULL_REQUEST_NUMBER=$(json -f $GITHUB_EVENT_PATH action)
           echo "Publishing Monaco based on $PULL_REQUEST_NUMBER"
@@ -71,7 +71,7 @@ jobs:
           node pulls/comment-on-release.js $PULL_REQUEST_NUMBER $SEMVER_NUMBER
 
       - name: 'Az CLI login'
-        uses: azure/login@v2
+        uses: azure/login@a65d910e8af852a8061c627c456678983e180302 # v2.2.0
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
