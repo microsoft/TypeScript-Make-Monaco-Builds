@@ -57,6 +57,9 @@ function main() {
   exec("git config --global user.name 'TypeScript Bot'")
   exec("git clone https://github.com/microsoft/monaco-editor.git");
 
+  // Pin monaco back; recent refactors have broken the built output.
+  execME("git switch --detach f420968fc91d2d10d9d3e47dc52e2f2bda0778dd");
+
 
   // Add typescript to the tsWorker export
   // https://github.com/microsoft/monaco-editor/pull/2775
