@@ -98,6 +98,11 @@ function main() {
   const typeScriptVersion = execME("json -f node_modules/typescript/package.json version").toString().trim();
   execME(`json -I -f package.json -e "this.version='${typeScriptVersion}'"`);
 
+  if (typeScriptVersion.startsWith("6.")) {
+    step("Silencing 6.0 deprecations");
+    execME(`json -I -f src/tsconfig.json -e "this.compilerOptions.ignoreDeprecations='6.0'"`);
+  }
+
   step("Creating release folder");
   execME(`npm run build-monaco-editor`);
 
