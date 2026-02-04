@@ -101,7 +101,7 @@ function main() {
   if (typeScriptVersion.startsWith("6.")) {
     step("Fixing tsconfig for TS 6.0");
     execME(`json -I -f src/tsconfig.json -e "this.compilerOptions.ignoreDeprecations='6.0'"`);
-    execME(`json -I -f src/tsconfig.json -e "this.compilerOptions.strict=false"`);
+    execME(`json -I -f build/tsconfig.json -e "this.compilerOptions.strict=false"`);
   }
 
   step("Creating release folder");
