@@ -15,35 +15,34 @@ const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
 
 console.error(`Getting microsoft/TypeScript#${prNumber}`);
 
-// Download all comments
-octokit.paginate(octokit.rest.issues.listComments, {
-  owner: "microsoft",
-  repo: "TypeScript",
-  issue_number: Number(prNumber)
-}).then(
-  results => {
-    // Get comments by the TS bot and sort them so the most recent is first
-    const messagesByTheBot = results
-      .filter(issue => issue.user?.id === 23042052)
-      .reverse();
+try {
+  // Download all comments
+  const results = await octokit.paginate(octokit.rest.issues.listComments, {
+    owner: "microsoft",
+    repo: "TypeScript",
+    issue_number: Number(prNumber)
+  });
 
-    const messageWithTGZ = messagesByTheBot.find(m => m.body?.includes("an installable tgz") && m.body?.includes("packed"))
+  // Get comments by the TS bot and sort them so the most recent is first
+  const messagesByTheBot = results
+    .filter(issue => issue.user?.id === 23042052)
+    .reverse();
 
-    // https://regex101.com/r/gG40L4/2
-    const regexForVersionInSideMessage = new RegExp('typescript-([0-9]*.[0-9]*.[0-9]*)-')
-    const regexResults = messageWithTGZ?.body?.match(regexForVersionInSideMessage)
-    if (!regexResults) {
-      process.exitCode = 1
-      console.log("Could not find a version to build a deploy from")
-      return
-    }
+  const messageWithTGZ = messagesByTheBot.find(m => m.body?.includes("an installable tgz") && m.body?.includes("packed"))
+
+  // https://regex101.com/r/gG40L4/2
+  const regexForVersionInSideMessage = new RegExp('typescript-([0-9]*.[0-9]*.[0-9]*)-')
+  const regexResults = messageWithTGZ?.body?.match(regexForVersionInSideMessage)
+  if (!regexResults) {
+    process.exitCode = 1
+    console.log("Could not find a version to build a deploy from")
+  } else {
     const version = regexResults[1]
     const index = results.indexOf(messageWithTGZ!)
 
     console.log(`${version}-pr-${prNumber}-${index}`)
-  },
-  failed => {
-    process.exitCode = 1
-    console.log("Failed to get PR comments:", failed);
   }
-);
+} catch (failed) {
+  process.exitCode = 1
+  console.log("Failed to get PR comments:", failed);
+}
