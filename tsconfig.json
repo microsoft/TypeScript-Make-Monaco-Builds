@@ -16,7 +16,8 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
 
-    "erasableSyntaxOnly": true
+    "erasableSyntaxOnly": true,
+    "rewriteRelativeImportExtensions": true
   }, 
   "exclude": ["monaco-editor"]
 }
