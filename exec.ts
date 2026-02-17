@@ -1,4 +1,4 @@
-const { execSync } = require("child_process");
+import { execSync } from "node:child_process";
 
 let hasError = false;
 
@@ -14,7 +14,7 @@ function exec(cmd: string, opts?: import("child_process").ExecSyncOptions) {
 exec.try = (cmd: string, opts?: import("child_process").ExecSyncOptions) => baseExec(cmd, opts, FailMode.Optional);
 exec.continueOnError = (cmd: string, opts?: import("child_process").ExecSyncOptions) => baseExec(cmd, opts, FailMode.Required);
 exec.hasError = () => hasError;
-module.exports = exec;
+export default exec;
 
 function baseExec(cmd: string, opts: import("child_process").ExecSyncOptions | undefined, failMode: number) {
   console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);

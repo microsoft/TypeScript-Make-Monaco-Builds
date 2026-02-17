@@ -1,5 +1,5 @@
-const { readFileSync, writeFileSync } = require("fs");
-const exec = require("./exec");
+import { readFileSync, writeFileSync } from "node:fs";
+import exec from "./exec.ts";
 
 const optionalTag = process.argv.slice(2)[0];
 

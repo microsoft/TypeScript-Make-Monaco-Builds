@@ -1,5 +1,5 @@
-const { execSync } = require("child_process");
-const { existsSync } = require("fs");
+import { execSync } from "node:child_process";
+import { existsSync } from "node:fs";
 const args = process.argv.slice(2);
 
 const exec = (cmd: string, opts?: import("child_process").ExecSyncOptions) => {

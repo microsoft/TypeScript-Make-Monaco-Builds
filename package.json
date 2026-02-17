@@ -1,8 +1,9 @@
 {
   "name": "typescript-make-monaco-builds",
   "private": true,
+  "type": "module",
   "dependencies": {
-    "@actions/github": "^6.0.0"
+    "@actions/github": "^9.0.0"
   },
   "devDependencies": {
     "@types/node": "^25.2.3",

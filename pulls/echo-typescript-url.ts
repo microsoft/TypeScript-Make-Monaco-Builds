@@ -1,3 +1,5 @@
+import * as github from "@actions/github";
+
 if (!process.env.GITHUB_TOKEN) {
   throw new Error("No GITHUB_TOKEN specified");
 }
@@ -7,7 +9,6 @@ if (!process.argv[2]) {
 }
 
 const prNumber = process.argv[2];
-const github = require("@actions/github");
 const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
 
 console.error(`Getting microsoft/TypeScript#${prNumber}`);

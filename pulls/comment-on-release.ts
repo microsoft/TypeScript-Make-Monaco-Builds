@@ -1,3 +1,5 @@
+import * as github from "@actions/github";
+
 if (!process.env.GITHUB_TOKEN) {
   throw new Error("No GITHUB_TOKEN specified");
 }
@@ -17,7 +19,6 @@ if (!process.argv[3]) {
 const prNumber = process.argv[2];
 const npmTag = process.argv[3];
 
-const github = require("@actions/github");
 const octokit = github.getOctokit(process.env.BOT_GITHUB_TOKEN);
 
 // Prints a semver version for the PR sandbox

@@ -1,8 +1,7 @@
 // This script grabs the versions of monaco and TS from NPM and re-uploads
 // them to the CDN to set it up for the existing playground supported TS versions
 
-const { execSync } = require("child_process");
-const path = require("path");
+import { execSync } from "node:child_process";
 
 const exec = (cmd: string, opts?: import("child_process").ExecSyncOptions) => {
   console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);

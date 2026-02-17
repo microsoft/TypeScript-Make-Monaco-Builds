@@ -1,4 +1,4 @@
-const { execSync } = require("child_process");
+import { execSync } from "node:child_process";
 
 const get = async (url: string) => {
   const packageJSON = await fetch(url)
@@ -12,7 +12,7 @@ const exec = (cmd: string, opts?: import("child_process").ExecSyncOptions) => {
 };
 
 const go = async () => {
-  const localTags = exec("git tag", { encoding: "utf8" }).split("\n")
+  const localTags = (exec("git tag", { encoding: "utf8" }) as string).split("\n")
 
   // e.g { "latest":"4.0.3","next":"4.1.0-dev.20201026","beta":"4.1.0-beta","rc":"4.0.1-rc","insiders":"4.0.2-insiders.20200818","tag-for-publishing-older-releases":"3.6.5","dev":"3.9.4" }
   const distTags: any = await get("https://registry.npmjs.org/-/package/typescript/dist-tags")

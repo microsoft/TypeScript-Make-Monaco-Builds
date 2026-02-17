@@ -1,6 +1,6 @@
-const { execSync } = require("child_process");
-const {createWriteStream, existsSync} = require("fs")
-const { Readable } = require("stream")
+import { execSync } from "node:child_process";
+import { createWriteStream, existsSync } from "node:fs";
+import { Readable } from "node:stream";
 const args = process.argv.slice(2);
 
 if (!process.env.GITHUB_TOKEN) {
@@ -25,7 +25,7 @@ const step = (msg: string) => console.log("\n\n - " + msg);
 const downloadFile = (async (url: string, path: string) => {
   const res = await fetch(url);
   const fileStream = createWriteStream(path);
-  const body = Readable.fromWeb(res.body);
+  const body = Readable.fromWeb(res.body!);
   const p: Promise<void> = new Promise((resolve, reject) => {
       body.pipe(fileStream);
       body.on("error", reject);
