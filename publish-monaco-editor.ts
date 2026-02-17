@@ -30,7 +30,7 @@ const dontDeploy = !!process.env.SKIP_DEPLOY
 const envUser = process.env.USER_ACCOUNT
 
 // For example: 
-//   USER_ACCOUNT="typescript-deploys" SKIP_DEPLOY="true" node ./publish-monaco-editor.js next
+//   USER_ACCOUNT="typescript-deploys" SKIP_DEPLOY="true" node ./publish-monaco-editor.ts next
 
 const step = msg => console.log("\n\n - " + msg);
 
@@ -44,7 +44,7 @@ function main() {
   const tagPrefix = isPushedTag || args[0].includes("http") || args[0].includes("-pr-") ? "" : `--tag ${monacoTypescriptTag}`;
 
   console.log("## Creating build of Monaco Editor");
-  process.stdout.write("> node publish-monaco-editor.js");
+  process.stdout.write("> node publish-monaco-editor.ts");
 
   const execME = cmd => exec(cmd, { cwd: "monaco-editor" });
   const execRelease = cmd => exec(cmd, { cwd: "monaco-editor/out/monaco-editor" });

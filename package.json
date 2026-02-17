@@ -3,7 +3,10 @@
   "private": true,
   "dependencies": {
     "@actions/github": "^6.0.0",
-    "@types/node": "^22.12.0",
     "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "typescript": "^5.9.3"
   }
 }

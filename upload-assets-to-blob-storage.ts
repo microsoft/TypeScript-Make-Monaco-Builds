@@ -12,7 +12,7 @@ const step = msg => console.log("\n\n - " + msg);
 
 function main() {
   console.log("## Uploading build of Monaco Editor");
-  process.stdout.write("> node upload-assets-to-blob-storage.js");
+  process.stdout.write("> node upload-assets-to-blob-storage.ts");
 
   const typescriptPackageJSON = JSON.parse(readFileSync("monaco-editor/package.json", "utf8"));
   const safeTypeScriptPackage = typescriptPackageJSON.version;

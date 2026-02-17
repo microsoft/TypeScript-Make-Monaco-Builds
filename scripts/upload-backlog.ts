@@ -35,7 +35,7 @@ const execME = cmd => exec(cmd, { cwd: "monaco-editor" });
 
 async function main() {
   console.log("## Uploading official builds of Monaco Editor");
-  step("> node scripts/upload-backlog.js");
+  step("> node scripts/upload-backlog.ts");
 
   const r = await fetch("https://registry.npmjs.org/monaco-editor");
   const editorJSON = await r.json();
