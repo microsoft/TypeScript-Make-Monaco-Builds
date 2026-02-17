@@ -1,15 +1,13 @@
-// @ts-check
-
 const nodeFetch = require("node-fetch").default
 const { execSync } = require("child_process");
 
-const get = async url => {
+const get = async (url: string) => {
   const packageJSON = await nodeFetch(url)
   const contents = await packageJSON.json()
   return contents
 }
 
-const exec = (cmd, opts) => {
+const exec = (cmd: string, opts?: import("child_process").ExecSyncOptions) => {
   console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);
   return execSync(cmd, opts);
 };

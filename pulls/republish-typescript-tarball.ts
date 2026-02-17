@@ -1,5 +1,3 @@
-// @ts-check
-
 const { execSync } = require("child_process");
 const nodeFetch = require("node-fetch").default
 const {createWriteStream, existsSync} = require("fs")
@@ -17,20 +15,17 @@ if (!args[1]) {
   throw new Error("No semver specified");
 }
 
-const exec = (cmd, opts) => {
+const exec = (cmd: string, opts?: import("child_process").ExecSyncOptions) => {
   console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);
   return execSync(cmd, opts);
 };
 
-const step = (msg) => console.log("\n\n - " + msg);
+const step = (msg: string) => console.log("\n\n - " + msg);
 
-const downloadFile = (async (url, path) => {
+const downloadFile = (async (url: string, path: string) => {
   const res = await nodeFetch(url);
   const fileStream = createWriteStream(path);
-  /**
-   * @type {Promise<void>}
-   */
-  const p = new Promise((resolve, reject) => {
+  const p: Promise<void> = new Promise((resolve, reject) => {
       res.body.pipe(fileStream);
       res.body.on("error", reject);
       fileStream.on("finish", resolve);

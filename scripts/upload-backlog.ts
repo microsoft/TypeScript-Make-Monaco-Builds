@@ -1,5 +1,3 @@
-// @ts-check
-
 // This script grabs the versions of monaco and TS from NPM and re-uploads
 // them to the CDN to set it up for the existing playground supported TS versions
 
@@ -7,16 +5,16 @@ const fetch = require("node-fetch").default;
 const { execSync } = require("child_process");
 const path = require("path");
 
-const exec = (cmd, opts) => {
+const exec = (cmd: string, opts?: import("child_process").ExecSyncOptions) => {
   console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);
   try {
     return execSync(cmd, opts);
   } catch (error) {
-    console.error(error.message);
+    console.error((error as Error).message);
   }
 };
 
-const step = msg => console.log("\n\n - " + msg);
+const step = (msg: string) => console.log("\n\n - " + msg);
 
 const allMetadata = {
   // Nightly: { monaco: "next", module: "@typescript-deploys/monaco-editor" },
@@ -31,7 +29,7 @@ const allMetadata = {
   "2.4.1": { monaco: "0.10.0" }
 };
 
-const execME = cmd => exec(cmd, { cwd: "monaco-editor" });
+const execME = (cmd: string) => exec(cmd, { cwd: "monaco-editor" });
 
 async function main() {
   console.log("## Uploading official builds of Monaco Editor");
@@ -43,7 +41,7 @@ async function main() {
   exec(`mkdir releases`);
 
   for (const tsVersion of Object.keys(allMetadata)) {
-    const mVersion = allMetadata[tsVersion].monaco;
+    const mVersion = (allMetadata as Record<string, { monaco: string }>)[tsVersion].monaco;
 
     const monacoTarURL = editorJSON.versions[mVersion].dist.tarball;
     step("Looking at monaco v" + mVersion);

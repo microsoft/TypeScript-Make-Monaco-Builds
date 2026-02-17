@@ -1,5 +1,3 @@
-// @ts-check
-
 const { execSync } = require("child_process");
 
 let hasError = false;
@@ -10,15 +8,15 @@ const FailMode = {
   Fatal: 2,
 };
 
-function exec(cmd, opts) {
+function exec(cmd: string, opts?: import("child_process").ExecSyncOptions) {
   return baseExec(cmd, opts, FailMode.Fatal);
 }
-exec.try = (cmd, opts) => baseExec(cmd, opts, FailMode.Optional);
-exec.continueOnError = (cmd, opts) => baseExec(cmd, opts, FailMode.Required);
+exec.try = (cmd: string, opts?: import("child_process").ExecSyncOptions) => baseExec(cmd, opts, FailMode.Optional);
+exec.continueOnError = (cmd: string, opts?: import("child_process").ExecSyncOptions) => baseExec(cmd, opts, FailMode.Required);
 exec.hasError = () => hasError;
 module.exports = exec;
 
-function baseExec(cmd, opts, failMode) {
+function baseExec(cmd: string, opts: import("child_process").ExecSyncOptions | undefined, failMode: number) {
   console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);
   try {
     return execSync(cmd, { stdio: "inherit", ...opts });
@@ -29,6 +27,6 @@ function baseExec(cmd, opts, failMode) {
     if (failMode === FailMode.Required) {
       hasError = true;
     }
-    console.error(error.message);
+    console.error((error as Error).message);
   }
 }
