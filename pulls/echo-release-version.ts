@@ -38,7 +38,7 @@ octokit.paginate(options).then(
 
     console.log(`${version}-pr-${prNumber}-${index}`)
   },
-  (failed: any) => {
+  failed => {
     process.exitCode = 1
     console.log("Failed to get PR comments:", failed);
   }

@@ -50,7 +50,7 @@ octokit.paginate(options).then(
       });
     }
   },
-  (failed: any) => {
+  failed => {
     process.exitCode = 1;
     console.log("Failed to get PR comments:", failed);
   }

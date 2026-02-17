@@ -45,7 +45,7 @@ octokit.paginate(octokit.rest.issues.listComments, {
       console.log("Could not find a message to build a deploy from")
     }
   },
-  (failed: any) => {
+  failed => {
     process.exitCode = 1
     console.log("Failed to get PR comments:", failed);
   }
