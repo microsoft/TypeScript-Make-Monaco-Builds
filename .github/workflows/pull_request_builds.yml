@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
-          node-version: "22.x"
+          node-version: "24.x"
           registry-url: "https://registry.npmjs.org"
 
       # Lets us use one-liner JSON manipulations on package.jsons
@@ -46,19 +46,19 @@ jobs:
           PULL_REQUEST_NUMBER=$(json -f $GITHUB_EVENT_PATH action)
           echo "Publishing Monaco based on $PULL_REQUEST_NUMBER"
 
-          ZIP_FILE=$(node pulls/echo-typescript-url.js $PULL_REQUEST_NUMBER)
+          ZIP_FILE=$(node pulls/echo-typescript-url.ts $PULL_REQUEST_NUMBER)
           echo "Using zip file from:"
           echo $ZIP_FILE
 
-          SEMVER_NUMBER=$(node pulls/echo-release-version.js $PULL_REQUEST_NUMBER)
+          SEMVER_NUMBER=$(node pulls/echo-release-version.ts $PULL_REQUEST_NUMBER)
 
           echo "Re-publishing TypeScript tarball to npm"
-          node ./pulls/republish-typescript-tarball.js $ZIP_FILE $SEMVER_NUMBER
+          node ./pulls/republish-typescript-tarball.ts $ZIP_FILE $SEMVER_NUMBER
 
           echo "Building TS Monaco $SEMVER_NUMBER"
 
           echo "Building Monaco Editor with the new TS Monaco"
-          node ./publish-monaco-editor.js $SEMVER_NUMBER @typescript-deploys/pr-build
+          node ./publish-monaco-editor.ts $SEMVER_NUMBER @typescript-deploys/pr-build
 
           echo ""
           echo ""
@@ -68,7 +68,7 @@ jobs:
           echo ""
           echo ""
           echo "Commenting back on the PR"
-          node pulls/comment-on-release.js $PULL_REQUEST_NUMBER $SEMVER_NUMBER
+          node pulls/comment-on-release.ts $PULL_REQUEST_NUMBER $SEMVER_NUMBER
 
       - name: 'Az CLI login'
         uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5 # v2.3.0
@@ -81,4 +81,4 @@ jobs:
       - name: Upload to Azure
         env:
           AZURE_STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
-        run: node ./upload-assets-to-blob-storage.js
+        run: node ./upload-assets-to-blob-storage.ts
