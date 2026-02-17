@@ -14,27 +14,31 @@ const prNumber = process.argv[2];
 const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
 
 console.error(`Getting microsoft/TypeScript#${prNumber}`);
-const options = octokit.rest.issues.listComments.endpoint.merge({
-  owner: "microsoft",
-  repo: "TypeScript",
-  issue_number: prNumber
-});
 
 // Download all comments
-octokit.paginate(options).then(
+octokit.paginate(octokit.rest.issues.listComments, {
+  owner: "microsoft",
+  repo: "TypeScript",
+  issue_number: Number(prNumber)
+}).then(
   results => {
     // Get comments by the TS bot and sort them so the most recent is first
     const messagesByTheBot = results
-      .filter(issue => issue.user.id === 23042052)
+      .filter(issue => issue.user?.id === 23042052)
       .reverse();
 
-    const messageWithTGZ = messagesByTheBot.find(m => m.body.includes("an installable tgz") && m.body.includes("packed"))
+    const messageWithTGZ = messagesByTheBot.find(m => m.body?.includes("an installable tgz") && m.body?.includes("packed"))
 
     // https://regex101.com/r/gG40L4/2
     const regexForVersionInSideMessage = new RegExp('typescript-([0-9]*.[0-9]*.[0-9]*)-')
-    const regexResults = messageWithTGZ.body.match(regexForVersionInSideMessage)
+    const regexResults = messageWithTGZ?.body?.match(regexForVersionInSideMessage)
+    if (!regexResults) {
+      process.exitCode = 1
+      console.log("Could not find a version to build a deploy from")
+      return
+    }
     const version = regexResults[1]
-    const index = results.indexOf(messageWithTGZ)
+    const index = results.indexOf(messageWithTGZ!)
 
     console.log(`${version}-pr-${prNumber}-${index}`)
   },
