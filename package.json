@@ -2,8 +2,7 @@
   "name": "typescript-make-monaco-builds",
   "private": true,
   "dependencies": {
-    "@actions/github": "^6.0.0",
-    "node-fetch": "^2.7.0"
+    "@actions/github": "^6.0.0"
   },
   "devDependencies": {
     "@types/node": "^25.2.3",

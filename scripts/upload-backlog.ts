@@ -1,7 +1,6 @@
 // This script grabs the versions of monaco and TS from NPM and re-uploads
 // them to the CDN to set it up for the existing playground supported TS versions
 
-const fetch = require("node-fetch").default;
 const { execSync } = require("child_process");
 const path = require("path");
 
@@ -36,7 +35,7 @@ async function main() {
   step("> node scripts/upload-backlog.ts");
 
   const r = await fetch("https://registry.npmjs.org/monaco-editor");
-  const editorJSON = await r.json();
+  const editorJSON: any = await r.json();
 
   exec(`mkdir releases`);
 

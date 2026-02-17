@@ -1,6 +1,6 @@
 const { execSync } = require("child_process");
-const nodeFetch = require("node-fetch").default
 const {createWriteStream, existsSync} = require("fs")
+const { Readable } = require("stream")
 const args = process.argv.slice(2);
 
 if (!process.env.GITHUB_TOKEN) {
@@ -23,11 +23,12 @@ const exec = (cmd: string, opts?: import("child_process").ExecSyncOptions) => {
 const step = (msg: string) => console.log("\n\n - " + msg);
 
 const downloadFile = (async (url: string, path: string) => {
-  const res = await nodeFetch(url);
+  const res = await fetch(url);
   const fileStream = createWriteStream(path);
+  const body = Readable.fromWeb(res.body);
   const p: Promise<void> = new Promise((resolve, reject) => {
-      res.body.pipe(fileStream);
-      res.body.on("error", reject);
+      body.pipe(fileStream);
+      body.on("error", reject);
       fileStream.on("finish", resolve);
     });
   await p;
