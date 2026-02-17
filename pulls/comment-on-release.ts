@@ -31,7 +31,7 @@ const options = octokit.rest.issues.listComments.endpoint.merge({
 
 // Download all comments
 octokit.paginate(options).then(
-  (results: any[]) => {
+  results => {
     // Get comments by the TS bot and sort them so the most recent is first
     const messagesByTheBot = results.filter(issue => issue.user.id === 23042052).reverse();
     const messageWithTGZ = messagesByTheBot.find(m => m.body.includes("an installable tgz") && m.body.includes("packed"));

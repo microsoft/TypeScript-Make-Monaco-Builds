@@ -12,19 +12,19 @@ const prNumber = process.argv[2];
 const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
 
 console.error(`Getting microsoft/TypeScript#${prNumber}`);
-const options = octokit.rest.issues.listComments.endpoint.merge({
-  owner: "microsoft",
-  repo: "TypeScript",
-  issue_number: prNumber
-});
 
 // Download all comments
-octokit.paginate(options).then(
-  (results: any[]) => {
+octokit.paginate(octokit.rest.issues.listComments, {
+  owner: "microsoft",
+  repo: "TypeScript",
+  issue_number: Number(prNumber)
+}).then(
+  results => {
     // Get comments by the TS bot and sort them so the most recent is first
     const messagesByTheBot = results
-      .filter(issue => issue.user.id === 23042052)
+      .filter(issue => issue.user?.id === 23042052)
       .map(issue => issue.body)
+      .filter((body): body is string => body != null)
       .reverse();
 
     const messageWithTGZ = messagesByTheBot.find(m => m.includes("an installable tgz") && m.includes("packed"))
@@ -32,9 +32,14 @@ octokit.paginate(options).then(
     // https://regex101.com/r/gG40L4/1
     const regexForMessage = new RegExp('"typescript": "(.*)"')
     
-    if (messagesByTheBot) {
+    if (messageWithTGZ) {
       const results = messageWithTGZ.match(regexForMessage)
-      console.log(results[1])
+      if (results) {
+        console.log(results[1])
+      } else {
+        process.exitCode = 1
+        console.log("Could not find a message to build a deploy from")
+      }
     } else {
       process.exitCode = 1
       console.log("Could not find a message to build a deploy from")
