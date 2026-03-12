@@ -1,22 +1,20 @@
-// @ts-check
-
-const { execSync } = require("child_process");
-const { existsSync } = require("fs");
+import { execSync } from "node:child_process";
+import { existsSync } from "node:fs";
 const args = process.argv.slice(2);
 
-const exec = (cmd, opts) => {
+const exec = (cmd: string, opts?: import("child_process").ExecSyncOptions) => {
   console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);
   try {
     return execSync(cmd, opts);
   } catch (error) {
     console.log("Command Failed:")
-    console.log("STDOUT:" + error.stdout.toString())
-    console.log("STDERR:" + error.stderr.toString())
+    console.log("STDOUT:" + (error as any).stdout.toString())
+    console.log("STDERR:" + (error as any).stderr.toString())
     throw error
   }
 };
 
-const failableMergeBranch = (exec, name) => {
+const failableMergeBranch = (exec: (cmd: string) => void, name: string) => {
   try {
     exec(`git merge ${name}`)
   } catch (e) {
@@ -30,9 +28,9 @@ const dontDeploy = !!process.env.SKIP_DEPLOY
 const envUser = process.env.USER_ACCOUNT
 
 // For example: 
-//   USER_ACCOUNT="typescript-deploys" SKIP_DEPLOY="true" node ./publish-monaco-editor.js next
+//   USER_ACCOUNT="typescript-deploys" SKIP_DEPLOY="true" node ./publish-monaco-editor.ts next
 
-const step = msg => console.log("\n\n - " + msg);
+const step = (msg: string) => console.log("\n\n - " + msg);
 
 function main() {
     // TypeScript calls nightlies next... So should we.
@@ -44,10 +42,10 @@ function main() {
   const tagPrefix = isPushedTag || args[0].includes("http") || args[0].includes("-pr-") ? "" : `--tag ${monacoTypescriptTag}`;
 
   console.log("## Creating build of Monaco Editor");
-  process.stdout.write("> node publish-monaco-editor.js");
+  process.stdout.write("> node publish-monaco-editor.ts");
 
-  const execME = cmd => exec(cmd, { cwd: "monaco-editor" });
-  const execRelease = cmd => exec(cmd, { cwd: "monaco-editor/out/monaco-editor" });
+  const execME = (cmd: string) => exec(cmd, { cwd: "monaco-editor" });
+  const execRelease = (cmd: string) => exec(cmd, { cwd: "monaco-editor/out/monaco-editor" });
 
   // Create a tarball of the current version
   step("Cloning the repo");

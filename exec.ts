@@ -1,0 +1,32 @@
+import { execSync } from "node:child_process";
+
+let hasError = false;
+
+const FailMode = {
+  Optional: 0,
+  Required: 1,
+  Fatal: 2,
+};
+
+function exec(cmd: string, opts?: import("child_process").ExecSyncOptions) {
+  return baseExec(cmd, opts, FailMode.Fatal);
+}
+exec.try = (cmd: string, opts?: import("child_process").ExecSyncOptions) => baseExec(cmd, opts, FailMode.Optional);
+exec.continueOnError = (cmd: string, opts?: import("child_process").ExecSyncOptions) => baseExec(cmd, opts, FailMode.Required);
+exec.hasError = () => hasError;
+export default exec;
+
+function baseExec(cmd: string, opts: import("child_process").ExecSyncOptions | undefined, failMode: number) {
+  console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);
+  try {
+    return execSync(cmd, { stdio: "inherit", ...opts });
+  } catch (error) {
+    if (failMode === FailMode.Fatal) {
+      throw error;
+    }
+    if (failMode === FailMode.Required) {
+      hasError = true;
+    }
+    console.error((error as Error).message);
+  }
+}

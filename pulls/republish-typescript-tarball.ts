@@ -1,8 +1,6 @@
-// @ts-check
-
-const { execSync } = require("child_process");
-const nodeFetch = require("node-fetch").default
-const {createWriteStream, existsSync} = require("fs")
+import { execSync } from "node:child_process";
+import { createWriteStream, existsSync } from "node:fs";
+import { Readable } from "node:stream";
 const args = process.argv.slice(2);
 
 if (!process.env.GITHUB_TOKEN) {
@@ -17,22 +15,20 @@ if (!args[1]) {
   throw new Error("No semver specified");
 }
 
-const exec = (cmd, opts) => {
+const exec = (cmd: string, opts?: import("child_process").ExecSyncOptions) => {
   console.log(`> ${cmd} ${opts ? JSON.stringify(opts) : ""}`);
   return execSync(cmd, opts);
 };
 
-const step = (msg) => console.log("\n\n - " + msg);
+const step = (msg: string) => console.log("\n\n - " + msg);
 
-const downloadFile = (async (url, path) => {
-  const res = await nodeFetch(url);
+const downloadFile = (async (url: string, path: string) => {
+  const res = await fetch(url);
   const fileStream = createWriteStream(path);
-  /**
-   * @type {Promise<void>}
-   */
-  const p = new Promise((resolve, reject) => {
-      res.body.pipe(fileStream);
-      res.body.on("error", reject);
+  const body = Readable.fromWeb(res.body!);
+  const p: Promise<void> = new Promise((resolve, reject) => {
+      body.pipe(fileStream);
+      body.on("error", reject);
       fileStream.on("finish", resolve);
     });
   await p;

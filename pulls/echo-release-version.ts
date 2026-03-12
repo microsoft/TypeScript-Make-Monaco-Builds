@@ -1,0 +1,48 @@
+// Prints a semver version for the PR sandbox
+
+import * as github from "@actions/github";
+
+if (!process.env.GITHUB_TOKEN) {
+  throw new Error("No GITHUB_TOKEN specified");
+}
+
+if (!process.argv[2]) {
+  throw new Error("No Pull Request number specified");
+}
+
+const prNumber = process.argv[2];
+const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+
+console.error(`Getting microsoft/TypeScript#${prNumber}`);
+
+try {
+  // Download all comments
+  const results = await octokit.paginate(octokit.rest.issues.listComments, {
+    owner: "microsoft",
+    repo: "TypeScript",
+    issue_number: Number(prNumber)
+  });
+
+  // Get comments by the TS bot and sort them so the most recent is first
+  const messagesByTheBot = results
+    .filter(issue => issue.user?.id === 23042052)
+    .reverse();
+
+  const messageWithTGZ = messagesByTheBot.find(m => m.body?.includes("an installable tgz") && m.body?.includes("packed"))
+
+  // https://regex101.com/r/gG40L4/2
+  const regexForVersionInSideMessage = new RegExp('typescript-([0-9]*.[0-9]*.[0-9]*)-')
+  const regexResults = messageWithTGZ?.body?.match(regexForVersionInSideMessage)
+  if (!regexResults) {
+    process.exitCode = 1
+    console.log("Could not find a version to build a deploy from")
+  } else {
+    const version = regexResults[1]
+    const index = results.indexOf(messageWithTGZ!)
+
+    console.log(`${version}-pr-${prNumber}-${index}`)
+  }
+} catch (failed) {
+  process.exitCode = 1
+  console.log("Failed to get PR comments:", failed);
+}
