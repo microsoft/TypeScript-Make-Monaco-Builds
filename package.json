@@ -6,7 +6,7 @@
     "@actions/github": "^9.0.0"
   },
   "devDependencies": {
-    "@types/node": "^25.2.3",
+    "@types/node": "^25.5.0",
     "typescript": "^5.9.3"
   }
 }
