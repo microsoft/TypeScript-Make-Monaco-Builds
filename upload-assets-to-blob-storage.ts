@@ -1,18 +1,16 @@
-// @ts-check
-
-const { readFileSync, writeFileSync } = require("fs");
-const exec = require("./exec");
+import { readFileSync, writeFileSync } from "node:fs";
+import exec from "./exec.ts";
 
 const optionalTag = process.argv.slice(2)[0];
 
 
 
 
-const step = msg => console.log("\n\n - " + msg);
+const step = (msg: string) => console.log("\n\n - " + msg);
 
 function main() {
   console.log("## Uploading build of Monaco Editor");
-  process.stdout.write("> node upload-assets-to-blob-storage.js");
+  process.stdout.write("> node upload-assets-to-blob-storage.ts");
 
   const typescriptPackageJSON = JSON.parse(readFileSync("monaco-editor/package.json", "utf8"));
   const safeTypeScriptPackage = typescriptPackageJSON.version;
@@ -51,7 +49,7 @@ function main() {
   // Update the next.json to be the latest _known_ nightly build of TS
   if (isPreRelease) {
     const existingReleases = JSON.parse(readFileSync(filename, "utf8")).versions;
-    const devReleases = existingReleases.filter(f => f.includes("-dev"));
+    const devReleases = existingReleases.filter((f: string) => f.includes("-dev"));
     const latest = devReleases.pop();
     writeFileSync("releases/next.json", JSON.stringify({ version: latest }));
     exec.continueOnError(`az storage blob upload --auth-mode login --file "releases/next.json" --container-name '$web' --name "indexes/next.json" --overwrite`);
