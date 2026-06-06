@@ -52,6 +52,7 @@ jobs:
             TypeScript-Make-Monaco-Builds
           permission-contents: write
           permission-issues: write
+          permission-pull-requests: write
       - name: Publish PR Build
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
