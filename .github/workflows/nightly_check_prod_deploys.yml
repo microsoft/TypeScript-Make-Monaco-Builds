@@ -50,8 +50,8 @@ jobs:
           basic_auth="$(node -e 'process.stdout.write(Buffer.from("x-access-token:" + process.env.GITHUB_APP_TOKEN).toString("base64"))')"
           echo "::add-mask::$basic_auth"
           git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ${basic_auth}"
-      - run: git config user.name "typescript-bot"
-      - run: git config user.email "bot@typescriptlang.org"
+      - run: git config user.name "typescript-automation[bot]"
+      - run: git config user.email "290192711+typescript-automation[bot]@users.noreply.github.com"
 
       - name: "Create new tags"
         run: |
