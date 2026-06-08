@@ -57,7 +57,7 @@ const go = async () => {
   exec(`json -I -f typescript/package/package.json -e "this.scripts.prepare=''"`)
  
   step("Publishing PR build to npm");
-  exec(`npm publish --access=public --tag pr-build`, { cwd: "typescript/package" })
+  exec("npm publish --access=public --tag pr-build", { cwd: "typescript/package" })
 }
 
 go()
