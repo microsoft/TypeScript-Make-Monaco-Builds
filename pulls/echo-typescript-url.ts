@@ -23,7 +23,7 @@ try {
 
   // Get comments by the TS bot and sort them so the most recent is first
   const messagesByTheBot = results
-    .filter(issue => issue.user?.id === 23042052)
+    .filter(issue => issue.user?.id === 23042052 || issue.user?.id === 290192711)
     .map(issue => issue.body)
     .filter((body): body is string => body != null)
     .reverse();
